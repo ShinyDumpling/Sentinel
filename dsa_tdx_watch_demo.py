@@ -230,9 +230,8 @@ STOCK_INFO_FIELDS = [
 DAILY_FIELDS = ["Open", "High", "Low", "Close", "Volume", "Amount"]
 
 BAIDU_SENTIMENT_URL = "https://finance.pae.baidu.com/vapi/sentimentlist"
-FORCED_LLM_API_KEY = "sk-3c8e0283cb1d49bf8c29c380808f2013"
-FORCED_LLM_MODEL = "deepseek/deepseek-v4-pro"
-FORCED_LLM_BASE_URL = "https://api.deepseek.com"
+DEFAULT_LLM_MODEL = "deepseek/deepseek-v4-pro"
+DEFAULT_LLM_BASE_URL = "https://api.deepseek.com"
 
 TODO_ITEMS = {
     "DSA策略要怎么改_是否有必要结构化": [
@@ -326,9 +325,9 @@ def _position_for_stock(code: str) -> Dict[str, Any]:
 
 
 def _get_llm_settings() -> Dict[str, Optional[str]]:
-    api_key = FORCED_LLM_API_KEY
-    model = FORCED_LLM_MODEL
-    base_url = FORCED_LLM_BASE_URL
+    api_key = os.getenv("ARK_API_KEY") or os.getenv("OPENAI_API_KEY")
+    model = os.getenv("ARK_MODEL") or os.getenv("OPENAI_MODEL") or DEFAULT_LLM_MODEL
+    base_url = os.getenv("ARK_BASE_URL") or os.getenv("OPENAI_BASE_URL") or DEFAULT_LLM_BASE_URL
     if model and "/" in model and not model.startswith("ark-"):
         model = model.split("/", 1)[1]
     return {
