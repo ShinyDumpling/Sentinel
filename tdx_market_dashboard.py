@@ -64,6 +64,12 @@ def get_block_type_label(type_code):
     return BLOCK_TYPE_LABELS.get(type_code, f"【{type_code}】")
 
 
+def get_block_type_display(code, block_type_map):
+    meta = block_type_map.get(code, {})
+    type_code = meta.get("type", "unknown")
+    return get_block_type_label(type_code)
+
+
 def _get_llm_settings():
     """从环境变量读 LLM 配置（ARK_API_KEY / ARK_MODEL / ARK_BASE_URL）"""
     api_key = os.getenv("ARK_API_KEY") or os.getenv("OPENAI_API_KEY")
@@ -152,8 +158,8 @@ def judge_style_with_llm(asof, index_rows):
 
     prompt = f"""你是一个A股市场风格分析助手。
 
-你的任务不是解读今天涨跌，不是分析板块，不是分析资金抱团方向，也不是给交易建议。
-你只需要根据6大宽基指数的表现，判断最近市场主风格偏向哪里。
+你的任务不是分析板块，不是分析资金抱团方向，也不是给交易建议。
+你只需要根据6大宽基指数的表现，区分“最近主风格”和“今天的盘面动作”。
 
 你会看到以下6个指数的数据：
 1. 上证指数
@@ -170,31 +176,39 @@ def judge_style_with_llm(asof, index_rows):
 - 成交额亿
 - 量能比
 
-请重点参考“5日%”和“20日%”的相对强弱关系，“当日%”和“量能比”只作为辅助判断。
+请按下面的时间框架做判断：
+- 20日%：判断最近一段时间的主风格
+- 5日%：判断最近短线是否仍在延续该风格
+- 当日%：判断今天是在强化、分歧、回撤，还是发生切换
+- 量能比：只作为辅助，不要过度解读
 
 请按以下原则判断：
-- 如果科创50、创业板指明显强于沪深300、上证指数，优先判断为“科技成长”
-- 如果中证1000明显强于沪深300，优先判断为“小盘题材”
-- 如果沪深300、上证指数明显强于创业板指、科创50，优先判断为“权重蓝筹”
-- 如果6大指数多数同步走强，可判断为“大盘普涨”
-- 如果强弱关系分裂、轮动较快，可判断为“混合轮动”
-- 如果没有清晰优势方向，可判断为“无明显主线”
+- 如果科创50、创业板指在20日和5日维度明显强于沪深300、上证指数，最近主风格偏“科技成长”
+- 如果中证1000在20日和5日维度明显强于沪深300，最近主风格偏“小盘题材”
+- 如果沪深300、上证指数在20日和5日维度明显强于创业板指、科创50，最近主风格偏“权重蓝筹”
+- 如果多数宽基在20日和5日维度都同步走强，可判断为“大盘普涨”
+- 如果20日主风格清晰，但当日多数指数普跌或短线强势指数明显转弱，应判断为“主风格仍在，但今天处于分歧/回撤”
+- 如果20日、5日、当日三个维度互相冲突且没有稳定优势方向，可判断为“混合轮动”或“无明显主线”
 
 注意：
 - 不要引用板块、个股、消息面、政策面
 - 不要补充输入中没有提供的信息
 - 只能依据这6大指数的数据做判断
+- 不要把“最近主风格”和“今天的盘面动作”混成一句空泛结论
 - 输出要克制、直接、少空话
 
 请输出如下 JSON：
 {{
   "最近主风格": "科技成长/小盘题材/权重蓝筹/大盘普涨/混合轮动/无明显主线",
-  "风格强度": "强/中/弱",
+  "最近风格强度": "强/中/弱",
+  "近5日延续性": "强延续/弱延续/开始分歧/已经走弱",
+  "今日盘面状态": "强化/分歧/回撤/切换/普跌",
+  "今日是否与主风格一致": "一致/部分一致/不一致",
   "指数依据": [
-    "一句话说明主要依据1",
-    "一句话说明主要依据2"
+    "一句话说明20日和5日维度的依据",
+    "一句话说明当日维度的依据"
   ],
-  "一句话结论": "一句大白话总结最近市场风格，20字以内"
+  "一句话结论": "一句大白话总结最近风格和今天状态，30字以内"
 }}
 
 【原始数据】
@@ -208,6 +222,113 @@ def judge_style_with_llm(asof, index_rows):
         response_format={"type": "json_object"},
         messages=[
             {"role": "system", "content": "你是一个克制、直接、只根据指数数据判断A股风格的分析助手。"},
+            {"role": "user", "content": prompt},
+        ],
+        timeout=120,
+    )
+    content = resp.choices[0].message.content or "{}"
+    try:
+        parsed = json.loads(content)
+    except json.JSONDecodeError:
+        return {"状态": "解析失败", "原始返回": content}
+    parsed["_模型"] = s["model"]
+    return parsed
+
+
+def judge_sector_intent_with_llm(asof, style_verdict, industry_top, industry_bottom, concept_top, concept_bottom):
+    """根据行业/概念板块榜与指数背景，判断市场资金意图。"""
+    s = _get_llm_settings()
+    if not s["api_key"] or not s["model"] or not s["base_url"]:
+        return {"状态": "未执行", "原因": "缺少 LLM 配置，已跳过资金意图判断。(设置 ARK_API_KEY / ARK_MODEL / ARK_BASE_URL 环境变量即可)"}
+
+    try:
+        from openai import OpenAI
+    except ImportError:
+        return {"状态": "未执行", "原因": "未安装 openai 库 (pip install openai)。"}
+
+    data_text = json.dumps({
+        "数据截止交易日": asof,
+        "指数风格背景": style_verdict,
+        "行业板块Top榜": industry_top,
+        "行业板块Bottom榜": industry_bottom,
+        "概念板块Top榜": concept_top,
+        "概念板块Bottom榜": concept_bottom,
+    }, ensure_ascii=False, indent=2)
+
+    prompt = f"""你是一个A股盘面资金意图分析助手。
+
+你的任务不是点评市场涨跌，不是分析个股，不是给交易建议，
+而是根据今天的行业板块和概念板块表现，判断市场资金意图偏什么。
+
+你会看到四类数据：
+1. 行业板块Top榜
+2. 行业板块Bottom榜
+3. 概念板块Top榜
+4. 概念板块Bottom榜
+
+每个板块包含：
+- 名称
+- 当日涨幅%
+- 20日涨幅%
+- 成交额亿
+- 主力净流入亿
+
+你还会看到宽基指数风格判断结果，作为辅助背景。
+
+请重点分析：
+- 资金更偏向防守型方向，还是进攻型方向
+- 是高股息/权重/稳定类方向更强，还是科技成长/高弹性方向更强
+- 板块上涨是否伴随成交活跃和主力净流入
+- 板块下跌是否显示出资金在主动回避某些方向
+- 是单一方向占优，还是多方向混合轮动
+
+请同时参考上涨板块和下跌板块：
+- 上涨榜代表资金短线偏好的方向
+- 下跌榜代表资金回避、流出或放弃的方向
+- 判断市场资金意图时，不能只看强势方向，也要看被抛弃的方向
+
+注意：
+- 不要分析个股
+- 不要补充输入中没有提供的消息面、政策面信息
+- 不要直接给买卖建议
+- 你的任务只是推断“市场资金意图”
+
+如果板块信号互相矛盾，不要只给出“混合轮动”或“无明显方向”这种笼统结论。
+你必须明确指出矛盾点来自哪里，例如：
+- 防守型板块走强，但高弹性成长板块也同时活跃
+- 板块涨幅强，但主力净流入不支持
+- 行业板块偏防守，而概念板块偏进攻
+- 上涨榜偏进攻，但跌幅榜里也出现大量高弹性成长方向
+
+在这种情况下，请把矛盾写进“矛盾点”字段，让用户自行判断更应重视哪类信号。
+
+请输出如下 JSON：
+{{
+  "市场资金意图": "偏防守/偏进攻/防守中有进攻/进攻中有防守/混合轮动/无明显方向",
+  "意图强度": "强/中/弱",
+  "是否存在明显矛盾": "是/否",
+  "矛盾点": [
+    "一句话指出矛盾1",
+    "一句话指出矛盾2"
+  ],
+  "判断依据": [
+    "一句话说明板块结构依据",
+    "一句话说明成交额或主力净流入依据"
+  ],
+  "一句话结论": "一句大白话总结今天资金想干什么，30字以内"
+}}
+
+【原始数据】
+{data_text}
+"""
+
+    client = OpenAI(api_key=s["api_key"], base_url=s["base_url"])
+    resp = client.chat.completions.create(
+        model=s["model"],
+        temperature=0.1,
+        response_format={"type": "json_object"},
+        messages=[
+            {"role": "system", "content": "你是一个克制、直接、只根据指数和板块数据判断A股资金意图的分析助手。"},
             {"role": "user", "content": prompt},
         ],
         timeout=120,
@@ -356,7 +477,7 @@ def main():
                 "代码": code,
                 "名称": code_to_name.get(code, code),
                 "类型代码": block_type,
-                "类型": get_block_type_label(block_type),
+                "类型": get_block_type_display(code, block_type_map),
                 "当日涨幅%": round(chg1, 2),
                 "20日涨幅%": round(chg20, 2) if chg20 == chg20 else None,
                 "成交额亿": round(amt_yi, 1),
@@ -382,6 +503,7 @@ def main():
     # =========================================================================
     industry_rows = [r for r in rows_filtered if r["类型代码"] == "industry"]
     industry_top = sorted(industry_rows, key=lambda r: r["当日涨幅%"] if r["当日涨幅%"] is not None else -999, reverse=True)[:TOP_N]
+    industry_bottom = sorted(industry_rows, key=lambda r: r["当日涨幅%"] if r["当日涨幅%"] is not None else 999)[:TOP_N]
 
     print("\n" + "=" * 72)
     print(f">>> 🔥 行业板块热度榜 Top {TOP_N} (按当日涨幅排序)")
@@ -396,11 +518,24 @@ def main():
         name_with_type = f"{r['名称']}{r['类型']}"
         print(f"{i:<4}{name_with_type:<20}{r['当日涨幅%']:>8.2f}{chg20_str:>8}{net_str:>14}")
 
+    print("\n" + "=" * 72)
+    print(f">>> 📉 行业板块跌幅榜 Bottom {TOP_N} (按当日涨幅排序)")
+    print("=" * 72)
+    print("-" * 72)
+    print(header)
+    print("-" * 72)
+    for i, r in enumerate(industry_bottom, 1):
+        chg20_str = f"{r['20日涨幅%']:.2f}" if r['20日涨幅%'] is not None else "-"
+        net_str = f"{r['主力净流入亿']}" if r['主力净流入亿'] is not None else "-"
+        name_with_type = f"{r['名称']}{r['类型']}"
+        print(f"{i:<4}{name_with_type:<20}{r['当日涨幅%']:>8.2f}{chg20_str:>8}{net_str:>14}")
+
     # =========================================================================
     # 第四部分：概念板块热度榜 Top15
     # =========================================================================
     concept_rows = [r for r in rows_filtered if r["类型代码"] == "theme"]
     concept_top = sorted(concept_rows, key=lambda r: r["当日涨幅%"] if r["当日涨幅%"] is not None else -999, reverse=True)[:TOP_N]
+    concept_bottom = sorted(concept_rows, key=lambda r: r["当日涨幅%"] if r["当日涨幅%"] is not None else 999)[:TOP_N]
 
     print("\n" + "=" * 72)
     print(f">>> 🚀 概念板块热度榜 Top {TOP_N} (按当日涨幅排序)")
@@ -414,8 +549,22 @@ def main():
         name_with_type = f"{r['名称']}{r['类型']}"
         print(f"{i:<4}{name_with_type:<20}{r['当日涨幅%']:>8.2f}{chg20_str:>8}{net_str:>14}")
 
+    print("\n" + "=" * 72)
+    print(f">>> 📉 概念板块跌幅榜 Bottom {TOP_N} (按当日涨幅排序)")
+    print("=" * 72)
+    print("-" * 72)
+    print(header)
+    print("-" * 72)
+    for i, r in enumerate(concept_bottom, 1):
+        chg20_str = f"{r['20日涨幅%']:.2f}" if r['20日涨幅%'] is not None else "-"
+        net_str = f"{r['主力净流入亿']}" if r['主力净流入亿'] is not None else "-"
+        name_with_type = f"{r['名称']}{r['类型']}"
+        print(f"{i:<4}{name_with_type:<20}{r['当日涨幅%']:>8.2f}{chg20_str:>8}{net_str:>14}")
+
     # 旧版 LLM 大白话解读逻辑已停用，后续如需对比可恢复：
     # verdict = judge_dashboard_with_llm(asof, index_rows, industry_top, concept_top, market_breadth)
+
+    style_verdict = None
 
     # =========================================================================
     # 第五部分：LLM 风格判断（只看6大指数）
@@ -424,11 +573,27 @@ def main():
         print("\n" + "=" * 72)
         print(">>> 🤖 LLM 最近市场风格判断")
         print("=" * 72)
-        verdict = judge_style_with_llm(asof, index_rows)
-        if verdict.get("状态"):
-            print(f"[{verdict.get('状态')}] {verdict.get('原因') or verdict.get('原始返回','')}")
+        style_verdict = judge_style_with_llm(asof, index_rows)
+        if style_verdict.get("状态"):
+            print(f"[{style_verdict.get('状态')}] {style_verdict.get('原因') or style_verdict.get('原始返回','')}")
         else:
-            print(json.dumps(verdict, ensure_ascii=False, indent=2))
+            print(json.dumps(style_verdict, ensure_ascii=False, indent=2))
+
+        print("\n" + "=" * 72)
+        print(">>> 🤖 LLM 市场资金意图判断")
+        print("=" * 72)
+        intent_verdict = judge_sector_intent_with_llm(
+            asof,
+            style_verdict if isinstance(style_verdict, dict) else {},
+            industry_top,
+            industry_bottom,
+            concept_top,
+            concept_bottom,
+        )
+        if intent_verdict.get("状态"):
+            print(f"[{intent_verdict.get('状态')}] {intent_verdict.get('原因') or intent_verdict.get('原始返回','')}")
+        else:
+            print(json.dumps(intent_verdict, ensure_ascii=False, indent=2))
     else:
         print("\n(已用 --no-llm 跳过 LLM 风格判断)")
 

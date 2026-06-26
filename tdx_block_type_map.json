@@ -1,2350 +1,2937 @@
 {
   "880081.SH": {
     "name": "轮动趋势",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880082.SH": {
     "name": "板块趋势",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880201.SH": {
     "name": "黑龙江",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880202.SH": {
     "name": "新疆板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880203.SH": {
     "name": "吉林板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880204.SH": {
     "name": "甘肃板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880205.SH": {
     "name": "辽宁板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880206.SH": {
     "name": "青海板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880207.SH": {
     "name": "北京板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880208.SH": {
     "name": "陕西板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880209.SH": {
     "name": "天津板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880210.SH": {
     "name": "广西板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880211.SH": {
     "name": "河北板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880212.SH": {
     "name": "广东板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880213.SH": {
     "name": "河南板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880214.SH": {
     "name": "宁夏板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880215.SH": {
     "name": "山东板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880216.SH": {
     "name": "上海板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880217.SH": {
     "name": "山西板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880218.SH": {
     "name": "深圳板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880219.SH": {
     "name": "湖北板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880220.SH": {
     "name": "福建板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880221.SH": {
     "name": "湖南板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880222.SH": {
     "name": "江西板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880223.SH": {
     "name": "四川板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880224.SH": {
     "name": "安徽板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880225.SH": {
     "name": "重庆板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880226.SH": {
     "name": "江苏板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880227.SH": {
     "name": "云南板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880228.SH": {
     "name": "浙江板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880229.SH": {
     "name": "贵州板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880230.SH": {
     "name": "海南板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880231.SH": {
     "name": "西藏板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880232.SH": {
     "name": "内蒙板块",
-    "type": "region"
+    "type": "region",
+    "type_label": "region"
   },
   "880501.SH": {
     "name": "含H股",
-    "type": "style"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880502.SH": {
     "name": "含B股",
-    "type": "style"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880505.SH": {
     "name": "稀缺资源",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880506.SH": {
     "name": "5G概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880507.SH": {
     "name": "国防军工",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880513.SH": {
     "name": "海峡西岸",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880515.SH": {
     "name": "通达信88",
-    "type": "style"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880516.SH": {
     "name": "ST板块",
-    "type": "style"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880519.SH": {
     "name": "碳中和",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880520.SH": {
     "name": "智能电网",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880521.SH": {
     "name": "黄金概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880522.SH": {
     "name": "低空经济",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880523.SH": {
     "name": "铜缆高速连接",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880524.SH": {
     "name": "含可转债",
-    "type": "style"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880525.SH": {
     "name": "高铁",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880526.SH": {
     "name": "高分红股",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880527.SH": {
     "name": "承诺不减",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880528.SH": {
     "name": "军工信息化",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880529.SH": {
     "name": "次新股",
-    "type": "style"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880530.SH": {
     "name": "合成生物",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880531.SH": {
     "name": "低安全分",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880532.SH": {
     "name": "整体上市",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880533.SH": {
     "name": "物联网",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880534.SH": {
     "name": "锂电池概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880535.SH": {
     "name": "稀土永磁",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880536.SH": {
     "name": "微盘精选",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880537.SH": {
     "name": "核电核能",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880538.SH": {
     "name": "参股金融",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880539.SH": {
     "name": "股权激励",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880540.SH": {
     "name": "创投概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880541.SH": {
     "name": "AI手机PC",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880542.SH": {
     "name": "水利建设",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880543.SH": {
     "name": "外资背景",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880544.SH": {
     "name": "光伏",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880545.SH": {
     "name": "云计算",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880546.SH": {
     "name": "卫星导航",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880547.SH": {
     "name": "玻璃基板",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880548.SH": {
     "name": "商业航天",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880549.SH": {
     "name": "可燃冰",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880550.SH": {
     "name": "PCB概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880551.SH": {
     "name": "大基金持股",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880552.SH": {
     "name": "车联网",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880553.SH": {
     "name": "页岩气",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880554.SH": {
     "name": "科创板次新",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880555.SH": {
     "name": "财税数字化",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880556.SH": {
     "name": "昨ST连板",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880557.SH": {
     "name": "生物疫苗",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880558.SH": {
     "name": "节能环保",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880559.SH": {
     "name": "要约收购",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880560.SH": {
     "name": "高端装备",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880561.SH": {
     "name": "折叠屏",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880562.SH": {
     "name": "高校背景",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880563.SH": {
     "name": "食品安全",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880564.SH": {
     "name": "白酒概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880565.SH": {
     "name": "送转潜力",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880566.SH": {
     "name": "AI眼镜",
-    "type": "event"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880567.SH": {
     "name": "海南自贸",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880568.SH": {
     "name": "生物质能",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880569.SH": {
     "name": "3D打印",
-    "type": "style"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880570.SH": {
     "name": "高应收款",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880571.SH": {
     "name": "碳纤维",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880572.SH": {
     "name": "新零售",
-    "type": "event"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880573.SH": {
     "name": "摘帽",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880574.SH": {
     "name": "苹果概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880575.SH": {
     "name": "地热能",
-    "type": "event"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880576.SH": {
     "name": "并购重组股",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880577.SH": {
     "name": "安防服务",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880578.SH": {
     "name": "专项贷款",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880579.SH": {
     "name": "智谱AI",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880580.SH": {
     "name": "智能交通",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880581.SH": {
     "name": "控制权变更",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880582.SH": {
     "name": "风电",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880583.SH": {
     "name": "充电桩",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880584.SH": {
     "name": "石墨烯",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880585.SH": {
     "name": "风沙治理",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880586.SH": {
     "name": "土地流转",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880587.SH": {
     "name": "聚氨酯",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880588.SH": {
     "name": "MLCC概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880589.SH": {
     "name": "智能穿戴",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880590.SH": {
     "name": "网络游戏",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880591.SH": {
     "name": "上海自贸",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880592.SH": {
     "name": "互联金融",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880593.SH": {
     "name": "婴童概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880594.SH": {
     "name": "一带一路",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880595.SH": {
     "name": "世界杯概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880596.SH": {
     "name": "体育概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880597.SH": {
     "name": "养老概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880598.SH": {
     "name": "博彩概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880599.SH": {
     "name": "民营医院",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880601.SH": {
     "name": "智慧政务",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880602.SH": {
     "name": "免税概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880603.SH": {
     "name": "新进指标股",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880604.SH": {
     "name": "PVDF概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880605.SH": {
     "name": "装配式建筑",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880606.SH": {
     "name": "辅助生殖",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880607.SH": {
     "name": "东数西算",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880608.SH": {
     "name": "第三代半导体",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880609.SH": {
     "name": "跨境支付CIPS",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880610.SH": {
     "name": "中俄贸易",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880611.SH": {
     "name": "核污染防治",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880612.SH": {
     "name": "镍金属",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880613.SH": {
     "name": "电子身份证",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880614.SH": {
     "name": "绿色建筑",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880615.SH": {
     "name": "家庭医生",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880616.SH": {
     "name": "大飞机",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880617.SH": {
     "name": "IP经济",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880618.SH": {
     "name": "化肥概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880619.SH": {
     "name": "业绩预增",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880620.SH": {
     "name": "券商金股",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880621.SH": {
     "name": "NFT概念",
-    "type": "holding"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880622.SH": {
     "name": "破增发价",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880623.SH": {
     "name": "肝炎概念",
-    "type": "style"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880624.SH": {
     "name": "新型城镇",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880625.SH": {
     "name": "主营变更",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880626.SH": {
     "name": "粮食概念",
-    "type": "event"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880627.SH": {
     "name": "超临界发电",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880628.SH": {
     "name": "钒电池",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880629.SH": {
     "name": "MicroLED",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880630.SH": {
     "name": "虚拟电厂",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880631.SH": {
     "name": "一体压铸",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880632.SH": {
     "name": "动力电池回收",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880633.SH": {
     "name": "汽车热管理",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880634.SH": {
     "name": "含GDR",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880635.SH": {
     "name": "先进封装",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880636.SH": {
     "name": "热泵概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880637.SH": {
     "name": "EDA概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880638.SH": {
     "name": "TOPCon电池",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880639.SH": {
     "name": "光热发电",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880640.SH": {
     "name": "历史新高",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880641.SH": {
     "name": "历史新低",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880642.SH": {
     "name": "供销社",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880643.SH": {
     "name": "Web3概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880644.SH": {
     "name": "DRG-DIP",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880645.SH": {
     "name": "AIGC概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880646.SH": {
     "name": "复合铜箔",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880647.SH": {
     "name": "数据确权",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880648.SH": {
     "name": "私募新进",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880649.SH": {
     "name": "POE胶膜",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880650.SH": {
     "name": "血氧仪",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880651.SH": {
     "name": "旅游概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880652.SH": {
     "name": "创新药",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880653.SH": {
     "name": "私募重仓",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880654.SH": {
     "name": "ChatGPT概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880655.SH": {
     "name": "钙钛矿电池",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880656.SH": {
     "name": "CPO概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880657.SH": {
     "name": "数字水印",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880658.SH": {
     "name": "高压快充",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880659.SH": {
     "name": "毫米波雷达",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880660.SH": {
     "name": "工业软件",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880661.SH": {
     "name": "6G概念",
-    "type": "event"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880662.SH": {
     "name": "时空大数据",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880664.SH": {
     "name": "机器视觉",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880665.SH": {
     "name": "昨ST首板",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880666.SH": {
     "name": "可控核聚变",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880667.SH": {
     "name": "数据要素",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880668.SH": {
     "name": "知识付费",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880669.SH": {
     "name": "算力租赁",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880670.SH": {
     "name": "光通信",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880671.SH": {
     "name": "中特估",
-    "type": "style"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880672.SH": {
     "name": "存储芯片",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880673.SH": {
     "name": "混合现实",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880674.SH": {
     "name": "英伟达概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880675.SH": {
     "name": "减速器",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880676.SH": {
     "name": "活跃ETF",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880677.SH": {
     "name": "活跃可转债",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880678.SH": {
     "name": "陆股通重仓",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880679.SH": {
     "name": "周期股",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880680.SH": {
     "name": "非周期股",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880681.SH": {
     "name": "减肥药",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880682.SH": {
     "name": "华为海思",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880683.SH": {
     "name": "星闪概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880684.SH": {
     "name": "BC电池",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880685.SH": {
     "name": "液冷服务器",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880686.SH": {
     "name": "华为汽车",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880687.SH": {
     "name": "活跃小盘非融",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880688.SH": {
     "name": "新型工业化",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880689.SH": {
     "name": "华为算力",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880690.SH": {
     "name": "昨日强势",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880691.SH": {
     "name": "昨日弱势",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880692.SH": {
     "name": "短剧游戏",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880693.SH": {
     "name": "多模态AI",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880694.SH": {
     "name": "活跃小盘国企",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880695.SH": {
     "name": "PEEK材料",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880696.SH": {
     "name": "小米汽车概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880697.SH": {
     "name": "飞行汽车",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880698.SH": {
     "name": "宽基ETF",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880699.SH": {
     "name": "最近情绪指数",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880702.SH": {
     "name": "壳资源",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880703.SH": {
     "name": "人形机器人",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880704.SH": {
     "name": "工业大麻",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880705.SH": {
     "name": "氢能源",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880706.SH": {
     "name": "分散染料",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880707.SH": {
     "name": "宠物经济",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880708.SH": {
     "name": "台资背景",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880709.SH": {
     "name": "人造肉",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880710.SH": {
     "name": "种业",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880711.SH": {
     "name": "操作系统",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880712.SH": {
     "name": "微小盘股",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880713.SH": {
     "name": "ETC概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880714.SH": {
     "name": "氟概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880715.SH": {
     "name": "磷概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880716.SH": {
     "name": "光刻机",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880717.SH": {
     "name": "C2M概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880718.SH": {
     "name": "小红书概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880720.SH": {
     "name": "抖音概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880721.SH": {
     "name": "北上重仓",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880722.SH": {
     "name": "华为鸿蒙",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880723.SH": {
     "name": "发可转债",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880724.SH": {
     "name": "地下管网",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880725.SH": {
     "name": "MiniLED",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880726.SH": {
     "name": "MCU芯片",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880727.SH": {
     "name": "盐湖提锂",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880728.SH": {
     "name": "航运概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880729.SH": {
     "name": "CXO概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880730.SH": {
     "name": "储能",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880731.SH": {
     "name": "新材料",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880732.SH": {
     "name": "AI智能体",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880733.SH": {
     "name": "人脑工程",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880734.SH": {
     "name": "工业气体",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880735.SH": {
     "name": "专精特新",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880736.SH": {
     "name": "工业母机",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880737.SH": {
     "name": "HJT电池",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880738.SH": {
     "name": "数字孪生",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880739.SH": {
     "name": "边缘计算",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880740.SH": {
     "name": "新型烟草",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880741.SH": {
     "name": "代糖概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880742.SH": {
     "name": "固态电池",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880743.SH": {
     "name": "物业管理概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880744.SH": {
     "name": "汽车拆解",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880745.SH": {
     "name": "NMN概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880746.SH": {
     "name": "国资云",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880747.SH": {
     "name": "AI医疗概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880748.SH": {
     "name": "元宇宙概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880749.SH": {
     "name": "云游戏",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880750.SH": {
     "name": "天然气",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880751.SH": {
     "name": "昨日跌停",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880752.SH": {
     "name": "昨曾跌停",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880753.SH": {
     "name": "绿色电力",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880754.SH": {
     "name": "培育钻石",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880755.SH": {
     "name": "钠电池",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880756.SH": {
     "name": "机构吸筹",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880757.SH": {
     "name": "冷链物流",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880758.SH": {
     "name": "汽车芯片",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880759.SH": {
     "name": "换电概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880760.SH": {
     "name": "预制菜",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880761.SH": {
     "name": "锂矿",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880762.SH": {
     "name": "信创",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880763.SH": {
     "name": "自由现金流",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880764.SH": {
     "name": "鸡肉",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880765.SH": {
     "name": "海洋经济",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880766.SH": {
     "name": "幽门螺杆菌",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880767.SH": {
     "name": "电子纸",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880769.SH": {
     "name": "股权集中",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880770.SH": {
     "name": "昨日上榜",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880771.SH": {
     "name": "MSCI中盘",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880774.SH": {
     "name": "昨日首板",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880778.SH": {
     "name": "次新预增",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880779.SH": {
     "name": "高融资盘",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880780.SH": {
     "name": "融资增加",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880781.SH": {
     "name": "QFII新进",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880782.SH": {
     "name": "保险新进",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880783.SH": {
     "name": "社保新进",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880784.SH": {
     "name": "昨日较弱",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880785.SH": {
     "name": "最近多板",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880786.SH": {
     "name": "海外业务",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880787.SH": {
     "name": "高商誉",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880789.SH": {
     "name": "昨成交20",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880790.SH": {
     "name": "高负债率",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880791.SH": {
     "name": "网红经济",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880792.SH": {
     "name": "基金增仓",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880793.SH": {
     "name": "基金减仓",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880794.SH": {
     "name": "远程办公",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880795.SH": {
     "name": "口罩防护",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880796.SH": {
     "name": "医废处理",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880797.SH": {
     "name": "虫害防治",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880798.SH": {
     "name": "超级电容",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880799.SH": {
     "name": "数据中心",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880801.SH": {
     "name": "基金重仓",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880802.SH": {
     "name": "QFII重仓",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880803.SH": {
     "name": "券商重仓",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880804.SH": {
     "name": "信托重仓",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880805.SH": {
     "name": "保险重仓",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880806.SH": {
     "name": "社保重仓",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880807.SH": {
     "name": "股东增持",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880808.SH": {
     "name": "股东减持",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880809.SH": {
     "name": "基金独门",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880812.SH": {
     "name": "昨日连板",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880813.SH": {
     "name": "并购重组预案",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880814.SH": {
     "name": "拟增持",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880815.SH": {
     "name": "拟减持",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880816.SH": {
     "name": "密集调研",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880817.SH": {
     "name": "商誉减值",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880818.SH": {
     "name": "通达信热股",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880821.SH": {
     "name": "大盘股",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880822.SH": {
     "name": "昨收活跃",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880823.SH": {
     "name": "微盘股",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880824.SH": {
     "name": "高市盈率",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880825.SH": {
     "name": "预计转亏",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880826.SH": {
     "name": "低市盈率",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880827.SH": {
     "name": "高市净率",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880829.SH": {
     "name": "低市净率",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880833.SH": {
     "name": "亏损股",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880834.SH": {
     "name": "微利股",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880835.SH": {
     "name": "绩优股",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880836.SH": {
     "name": "配股股",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880837.SH": {
     "name": "活跃股",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880842.SH": {
     "name": "业绩预升",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880843.SH": {
     "name": "业绩预降",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880844.SH": {
     "name": "预计扭亏",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880845.SH": {
     "name": "高股息股",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880846.SH": {
     "name": "破净资产",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880847.SH": {
     "name": "行业龙头",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880848.SH": {
     "name": "被举牌",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880849.SH": {
     "name": "回购计划",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880850.SH": {
     "name": "定增预案",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880851.SH": {
     "name": "已高送转",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880852.SH": {
     "name": "参股新股",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880853.SH": {
     "name": "中字头",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880854.SH": {
     "name": "预高送转",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880856.SH": {
     "name": "定增股",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880857.SH": {
     "name": "证金汇金持股",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880858.SH": {
     "name": "国开持股",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880859.SH": {
     "name": "员工持股",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880860.SH": {
     "name": "扣非亏损",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880861.SH": {
     "name": "连续亏损",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880863.SH": {
     "name": "昨日涨停",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880864.SH": {
     "name": "昨日振荡",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880865.SH": {
     "name": "近期新高",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880866.SH": {
     "name": "近期新低",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880867.SH": {
     "name": "昨高换手",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880868.SH": {
     "name": "高贝塔值",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880869.SH": {
     "name": "股权转让",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880870.SH": {
     "name": "两年新股",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880871.SH": {
     "name": "股权分散",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880872.SH": {
     "name": "近期复牌",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880873.SH": {
     "name": "个人持股",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880874.SH": {
     "name": "昨曾涨停",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880875.SH": {
     "name": "中小银行",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880876.SH": {
     "name": "户数增加",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880877.SH": {
     "name": "户数减少",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880878.SH": {
     "name": "百元股",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880879.SH": {
     "name": "低价股",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880880.SH": {
     "name": "近期强势",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880881.SH": {
     "name": "近期弱势",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880882.SH": {
     "name": "久不分红",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880883.SH": {
     "name": "MSCI成份",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880884.SH": {
     "name": "最近异动",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880885.SH": {
     "name": "近端次新",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880886.SH": {
     "name": "昨日较强",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880887.SH": {
     "name": "次新超跌",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880889.SH": {
     "name": "不活跃股",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880890.SH": {
     "name": "配股预案",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880891.SH": {
     "name": "破发行价",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880892.SH": {
     "name": "高质押股",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "880893.SH": {
     "name": "送转超跌",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880894.SH": {
     "name": "养老金持股",
-    "type": "holding"
+    "type": "style",
+    "type_label": "style"
   },
   "880895.SH": {
     "name": "持续增长",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880896.SH": {
     "name": "风险提示",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880897.SH": {
     "name": "即将解禁",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880898.SH": {
     "name": "近已解禁",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880899.SH": {
     "name": "钴金属",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880901.SH": {
     "name": "信息安全",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880902.SH": {
     "name": "特斯拉概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880903.SH": {
     "name": "水产品",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880904.SH": {
     "name": "机器人概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880905.SH": {
     "name": "超导概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880906.SH": {
     "name": "智能家居",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880908.SH": {
     "name": "职业教育",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880909.SH": {
     "name": "燃料电池",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880910.SH": {
     "name": "草甘膦",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880911.SH": {
     "name": "雄安新区",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880912.SH": {
     "name": "外骨骼机器人",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880913.SH": {
     "name": "基因概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880914.SH": {
     "name": "军贸概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880915.SH": {
     "name": "昨日突涨",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880916.SH": {
     "name": "国产软件",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880919.SH": {
     "name": "粤港澳",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880920.SH": {
     "name": "免疫治疗",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880921.SH": {
     "name": "阿里概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880922.SH": {
     "name": "钛金属",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880923.SH": {
     "name": "赛马概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880926.SH": {
     "name": "垃圾分类",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880929.SH": {
     "name": "维生素",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880930.SH": {
     "name": "汽车电子",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880933.SH": {
     "name": "智能医疗",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880936.SH": {
     "name": "猪肉",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880939.SH": {
     "name": "无人机",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880940.SH": {
     "name": "PPP概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880941.SH": {
     "name": "跨境电商",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880942.SH": {
     "name": "虚拟现实",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880943.SH": {
     "name": "量子科技",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880944.SH": {
     "name": "无人驾驶",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880945.SH": {
     "name": "OLED概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880946.SH": {
     "name": "区块链",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880947.SH": {
     "name": "化债AMC",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880948.SH": {
     "name": "人工智能",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880949.SH": {
     "name": "智慧城市",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880950.SH": {
     "name": "军民融合",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880951.SH": {
     "name": "新能源车",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880952.SH": {
     "name": "芯片",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880953.SH": {
     "name": "租购同权",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880954.SH": {
     "name": "大数据",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880955.SH": {
     "name": "乡村振兴",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880956.SH": {
     "name": "腾讯概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880957.SH": {
     "name": "工业互联",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880958.SH": {
     "name": "AI营销",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880959.SH": {
     "name": "知识产权",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880960.SH": {
     "name": "仿制药",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880961.SH": {
     "name": "小米概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880962.SH": {
     "name": "百度概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880963.SH": {
     "name": "昨日断板",
-    "type": "event"
+    "type": "style",
+    "type_label": "style"
   },
   "880964.SH": {
     "name": "特高压",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880965.SH": {
     "name": "超清视频",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880966.SH": {
     "name": "消费电子概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880967.SH": {
     "name": "数字货币",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880968.SH": {
     "name": "胎压监测",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880969.SH": {
     "name": "无线耳机",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880970.SH": {
     "name": "分拆上市预期",
-    "type": "theme"
+    "type": "style",
+    "type_label": "style"
   },
   "880971.SH": {
     "name": "降解塑料",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880972.SH": {
     "name": "雅江水电概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880973.SH": {
     "name": "医美概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880974.SH": {
     "name": "烟草概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880975.SH": {
     "name": "有机硅概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880977.SH": {
     "name": "BIPV概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880978.SH": {
     "name": "DeepSeek概念",
-    "type": "theme"
+    "type": "theme",
+    "type_label": "theme"
   },
   "880979.SH": {
     "name": "科创成长层",
-    "type": "style"
+    "type": "style",
+    "type_label": "style"
   },
   "881002.SH": {
     "name": "煤炭开采",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881005.SH": {
     "name": "焦炭加工",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881007.SH": {
     "name": "油气开采",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881008.SH": {
     "name": "油服工程",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881011.SH": {
     "name": "石油化工",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881016.SH": {
     "name": "日用化工",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881019.SH": {
     "name": "化纤",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881026.SH": {
     "name": "化学原料",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881034.SH": {
     "name": "化学制品",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881044.SH": {
     "name": "塑料",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881051.SH": {
     "name": "橡胶",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881055.SH": {
     "name": "农用化工",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881062.SH": {
     "name": "冶钢原料",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881065.SH": {
     "name": "普钢",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881069.SH": {
     "name": "特钢",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881071.SH": {
     "name": "工业金属",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881075.SH": {
     "name": "贵金属",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881078.SH": {
     "name": "能源金属",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881082.SH": {
     "name": "稀有金属",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881087.SH": {
     "name": "金属新材料",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881091.SH": {
     "name": "水泥",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881094.SH": {
     "name": "玻璃玻纤",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881097.SH": {
     "name": "装饰建材",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881104.SH": {
     "name": "非金属材料",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881106.SH": {
     "name": "种植业",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881111.SH": {
     "name": "养殖业",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881115.SH": {
     "name": "林业",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881116.SH": {
     "name": "渔业",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881119.SH": {
     "name": "饲料",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881123.SH": {
     "name": "农产品加工",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881127.SH": {
     "name": "动物保健",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881130.SH": {
     "name": "酿酒",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881136.SH": {
     "name": "饮料乳品",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881139.SH": {
     "name": "调味品",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881140.SH": {
     "name": "休闲食品",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881144.SH": {
     "name": "食品加工",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881151.SH": {
     "name": "纺织制造",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881157.SH": {
     "name": "服装家纺",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881162.SH": {
     "name": "饰品",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881167.SH": {
     "name": "造纸",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881171.SH": {
     "name": "包装印刷",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881177.SH": {
     "name": "家居用品",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881180.SH": {
     "name": "文娱用品",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881184.SH": {
     "name": "白色家电",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881187.SH": {
     "name": "黑色家电",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881190.SH": {
     "name": "小家电",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881194.SH": {
     "name": "厨卫电器",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881198.SH": {
     "name": "家电零部件",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881200.SH": {
     "name": "一般零售",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881204.SH": {
     "name": "商业物业经营",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881205.SH": {
     "name": "专业连锁",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881206.SH": {
     "name": "贸易",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881207.SH": {
     "name": "电子商务",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881212.SH": {
     "name": "乘用车",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881215.SH": {
     "name": "商用车",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881218.SH": {
     "name": "汽车零部件",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881224.SH": {
     "name": "汽车服务",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881227.SH": {
     "name": "摩托车及其他",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881231.SH": {
     "name": "化学制药",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881234.SH": {
     "name": "生物制品",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881241.SH": {
     "name": "医疗器械",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881247.SH": {
     "name": "医疗服务",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881252.SH": {
     "name": "医药商业",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881256.SH": {
     "name": "中药",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881257.SH": {
     "name": "医疗美容",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881261.SH": {
     "name": "电机制造",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881262.SH": {
     "name": "电池",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881268.SH": {
     "name": "电网设备",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881275.SH": {
     "name": "光伏设备",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881282.SH": {
     "name": "风电设备",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881285.SH": {
     "name": "其他发电设备",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881287.SH": {
     "name": "地面兵装",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881288.SH": {
     "name": "航空装备",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881289.SH": {
     "name": "航天装备",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881290.SH": {
     "name": "航海装备",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881291.SH": {
     "name": "军工电子",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881293.SH": {
     "name": "轨交设备",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881294.SH": {
     "name": "通用设备",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881303.SH": {
     "name": "专用设备",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881310.SH": {
     "name": "工程机械",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881313.SH": {
     "name": "自动化设备",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881319.SH": {
     "name": "半导体",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881326.SH": {
     "name": "消费电子",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881329.SH": {
     "name": "光学光电",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881333.SH": {
     "name": "元器件",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881336.SH": {
     "name": "其他电子",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881338.SH": {
     "name": "通信设备",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881344.SH": {
     "name": "电信服务",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881347.SH": {
     "name": "通信工程",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881352.SH": {
     "name": "IT设备",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881355.SH": {
     "name": "软件服务",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881359.SH": {
     "name": "云服务",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881364.SH": {
     "name": "产业互联网",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881369.SH": {
     "name": "游戏",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881370.SH": {
     "name": "广告营销",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881373.SH": {
     "name": "影视院线",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881376.SH": {
     "name": "数字媒体",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881380.SH": {
     "name": "出版业",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881384.SH": {
     "name": "广播电视",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881386.SH": {
     "name": "全国性银行",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881389.SH": {
     "name": "地方性银行",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881394.SH": {
     "name": "证券",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881395.SH": {
     "name": "保险",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881396.SH": {
     "name": "多元金融",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881406.SH": {
     "name": "房屋建设",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881407.SH": {
     "name": "基础建设",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881410.SH": {
     "name": "专业工程",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881415.SH": {
     "name": "工程咨询服务",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881416.SH": {
     "name": "装修装饰",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881418.SH": {
     "name": "房地产开发",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881422.SH": {
     "name": "房产服务",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881427.SH": {
     "name": "体育",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881428.SH": {
     "name": "教育培训",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881429.SH": {
     "name": "酒店餐饮",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881432.SH": {
     "name": "旅游",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881436.SH": {
     "name": "专业服务",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881442.SH": {
     "name": "公路铁路",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881446.SH": {
     "name": "航空机场",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881449.SH": {
     "name": "航运港口",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881452.SH": {
     "name": "物流",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881459.SH": {
     "name": "电力",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881467.SH": {
     "name": "燃气",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881468.SH": {
     "name": "水务",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881470.SH": {
     "name": "环保设备",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881471.SH": {
     "name": "环境治理",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881476.SH": {
     "name": "环境监测",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   },
   "881478.SH": {
     "name": "综合类",
-    "type": "industry"
+    "type": "industry",
+    "type_label": "industry"
   }
 }

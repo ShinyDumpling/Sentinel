@@ -1,0 +1,950 @@
+[
+  {
+    "index": 1,
+    "code": "880556.SH",
+    "name": "昨ST连板",
+    "type": "style"
+  },
+  {
+    "index": 2,
+    "code": "880665.SH",
+    "name": "昨ST首板",
+    "type": "style"
+  },
+  {
+    "index": 3,
+    "code": "880812.SH",
+    "name": "昨日连板",
+    "type": "style"
+  },
+  {
+    "index": 4,
+    "code": "880915.SH",
+    "name": "昨日突涨",
+    "type": "style"
+  },
+  {
+    "index": 5,
+    "code": "880858.SH",
+    "name": "国开持股",
+    "type": "style"
+  },
+  {
+    "index": 6,
+    "code": "880863.SH",
+    "name": "昨日涨停",
+    "type": "style"
+  },
+  {
+    "index": 7,
+    "code": "880081.SH",
+    "name": "轮动趋势",
+    "type": "style"
+  },
+  {
+    "index": 8,
+    "code": "880851.SH",
+    "name": "已高送转",
+    "type": "style"
+  },
+  {
+    "index": 9,
+    "code": "880843.SH",
+    "name": "业绩预降",
+    "type": "style"
+  },
+  {
+    "index": 10,
+    "code": "880836.SH",
+    "name": "配股股",
+    "type": "style"
+  },
+  {
+    "index": 11,
+    "code": "880825.SH",
+    "name": "预计转亏",
+    "type": "style"
+  },
+  {
+    "index": 12,
+    "code": "880778.SH",
+    "name": "次新预增",
+    "type": "style"
+  },
+  {
+    "index": 13,
+    "code": "880895.SH",
+    "name": "持续增长",
+    "type": "style"
+  },
+  {
+    "index": 14,
+    "code": "880551.SH",
+    "name": "大基金持股",
+    "type": "style"
+  },
+  {
+    "index": 15,
+    "code": "880897.SH",
+    "name": "即将解禁",
+    "type": "style"
+  },
+  {
+    "index": 16,
+    "code": "880532.SH",
+    "name": "整体上市",
+    "type": "style"
+  },
+  {
+    "index": 17,
+    "code": "880640.SH",
+    "name": "历史新高",
+    "type": "style"
+  },
+  {
+    "index": 18,
+    "code": "880875.SH",
+    "name": "中小银行",
+    "type": "style"
+  },
+  {
+    "index": 19,
+    "code": "880859.SH",
+    "name": "员工持股",
+    "type": "style"
+  },
+  {
+    "index": 20,
+    "code": "880877.SH",
+    "name": "户数减少",
+    "type": "style"
+  },
+  {
+    "index": 21,
+    "code": "880845.SH",
+    "name": "高股息股",
+    "type": "style"
+  },
+  {
+    "index": 22,
+    "code": "880856.SH",
+    "name": "定增股",
+    "type": "style"
+  },
+  {
+    "index": 23,
+    "code": "880625.SH",
+    "name": "主营变更",
+    "type": "style"
+  },
+  {
+    "index": 24,
+    "code": "880880.SH",
+    "name": "近期强势",
+    "type": "style"
+  },
+  {
+    "index": 25,
+    "code": "880708.SH",
+    "name": "台资背景",
+    "type": "style"
+  },
+  {
+    "index": 26,
+    "code": "880829.SH",
+    "name": "低市净率",
+    "type": "style"
+  },
+  {
+    "index": 27,
+    "code": "880622.SH",
+    "name": "破增发价",
+    "type": "style"
+  },
+  {
+    "index": 28,
+    "code": "880527.SH",
+    "name": "承诺不减",
+    "type": "style"
+  },
+  {
+    "index": 29,
+    "code": "880865.SH",
+    "name": "近期新高",
+    "type": "style"
+  },
+  {
+    "index": 30,
+    "code": "880677.SH",
+    "name": "活跃可转债",
+    "type": "style"
+  },
+  {
+    "index": 31,
+    "code": "880837.SH",
+    "name": "活跃股",
+    "type": "style"
+  },
+  {
+    "index": 32,
+    "code": "880889.SH",
+    "name": "不活跃股",
+    "type": "style"
+  },
+  {
+    "index": 33,
+    "code": "880805.SH",
+    "name": "保险重仓",
+    "type": "style"
+  },
+  {
+    "index": 34,
+    "code": "880826.SH",
+    "name": "低市盈率",
+    "type": "style"
+  },
+  {
+    "index": 35,
+    "code": "880807.SH",
+    "name": "股东增持",
+    "type": "style"
+  },
+  {
+    "index": 36,
+    "code": "880814.SH",
+    "name": "拟增持",
+    "type": "style"
+  },
+  {
+    "index": 37,
+    "code": "880752.SH",
+    "name": "昨曾跌停",
+    "type": "style"
+  },
+  {
+    "index": 38,
+    "code": "880846.SH",
+    "name": "破净资产",
+    "type": "style"
+  },
+  {
+    "index": 39,
+    "code": "880785.SH",
+    "name": "最近多板",
+    "type": "style"
+  },
+  {
+    "index": 40,
+    "code": "880815.SH",
+    "name": "拟减持",
+    "type": "style"
+  },
+  {
+    "index": 41,
+    "code": "880573.SH",
+    "name": "摘帽",
+    "type": "style"
+  },
+  {
+    "index": 42,
+    "code": "880774.SH",
+    "name": "昨日首板",
+    "type": "style"
+  },
+  {
+    "index": 43,
+    "code": "880809.SH",
+    "name": "基金独门",
+    "type": "style"
+  },
+  {
+    "index": 44,
+    "code": "880848.SH",
+    "name": "被举牌",
+    "type": "style"
+  },
+  {
+    "index": 45,
+    "code": "880690.SH",
+    "name": "昨日强势",
+    "type": "style"
+  },
+  {
+    "index": 46,
+    "code": "880782.SH",
+    "name": "保险新进",
+    "type": "style"
+  },
+  {
+    "index": 47,
+    "code": "880879.SH",
+    "name": "低价股",
+    "type": "style"
+  },
+  {
+    "index": 48,
+    "code": "880787.SH",
+    "name": "高商誉",
+    "type": "style"
+  },
+  {
+    "index": 49,
+    "code": "880735.SH",
+    "name": "专精特新",
+    "type": "style"
+  },
+  {
+    "index": 50,
+    "code": "880702.SH",
+    "name": "壳资源",
+    "type": "style"
+  },
+  {
+    "index": 51,
+    "code": "880868.SH",
+    "name": "高贝塔值",
+    "type": "style"
+  },
+  {
+    "index": 52,
+    "code": "880869.SH",
+    "name": "股权转让",
+    "type": "style"
+  },
+  {
+    "index": 53,
+    "code": "880816.SH",
+    "name": "密集调研",
+    "type": "style"
+  },
+  {
+    "index": 54,
+    "code": "880780.SH",
+    "name": "融资增加",
+    "type": "style"
+  },
+  {
+    "index": 55,
+    "code": "880874.SH",
+    "name": "昨曾涨停",
+    "type": "style"
+  },
+  {
+    "index": 56,
+    "code": "880847.SH",
+    "name": "行业龙头",
+    "type": "style"
+  },
+  {
+    "index": 57,
+    "code": "880751.SH",
+    "name": "昨日跌停",
+    "type": "style"
+  },
+  {
+    "index": 58,
+    "code": "880886.SH",
+    "name": "昨日较强",
+    "type": "style"
+  },
+  {
+    "index": 59,
+    "code": "880770.SH",
+    "name": "昨日上榜",
+    "type": "style"
+  },
+  {
+    "index": 60,
+    "code": "880808.SH",
+    "name": "股东减持",
+    "type": "style"
+  },
+  {
+    "index": 61,
+    "code": "880860.SH",
+    "name": "扣非亏损",
+    "type": "style"
+  },
+  {
+    "index": 62,
+    "code": "880565.SH",
+    "name": "送转潜力",
+    "type": "style"
+  },
+  {
+    "index": 63,
+    "code": "880723.SH",
+    "name": "发可转债",
+    "type": "style"
+  },
+  {
+    "index": 64,
+    "code": "880824.SH",
+    "name": "高市盈率",
+    "type": "style"
+  },
+  {
+    "index": 65,
+    "code": "880526.SH",
+    "name": "高分红股",
+    "type": "style"
+  },
+  {
+    "index": 66,
+    "code": "880543.SH",
+    "name": "外资背景",
+    "type": "style"
+  },
+  {
+    "index": 67,
+    "code": "880833.SH",
+    "name": "亏损股",
+    "type": "style"
+  },
+  {
+    "index": 68,
+    "code": "880576.SH",
+    "name": "并购重组股",
+    "type": "style"
+  },
+  {
+    "index": 69,
+    "code": "880867.SH",
+    "name": "昨高换手",
+    "type": "style"
+  },
+  {
+    "index": 70,
+    "code": "880834.SH",
+    "name": "微利股",
+    "type": "style"
+  },
+  {
+    "index": 71,
+    "code": "880803.SH",
+    "name": "券商重仓",
+    "type": "style"
+  },
+  {
+    "index": 72,
+    "code": "880823.SH",
+    "name": "微盘股",
+    "type": "style"
+  },
+  {
+    "index": 73,
+    "code": "880870.SH",
+    "name": "两年新股",
+    "type": "style"
+  },
+  {
+    "index": 74,
+    "code": "880793.SH",
+    "name": "基金减仓",
+    "type": "style"
+  },
+  {
+    "index": 75,
+    "code": "880849.SH",
+    "name": "回购计划",
+    "type": "style"
+  },
+  {
+    "index": 76,
+    "code": "880893.SH",
+    "name": "送转超跌",
+    "type": "style"
+  },
+  {
+    "index": 77,
+    "code": "880676.SH",
+    "name": "活跃ETF",
+    "type": "style"
+  },
+  {
+    "index": 78,
+    "code": "880678.SH",
+    "name": "陆股通重仓",
+    "type": "style"
+  },
+  {
+    "index": 79,
+    "code": "880539.SH",
+    "name": "股权激励",
+    "type": "style"
+  },
+  {
+    "index": 80,
+    "code": "880769.SH",
+    "name": "股权集中",
+    "type": "style"
+  },
+  {
+    "index": 81,
+    "code": "880853.SH",
+    "name": "中字头",
+    "type": "style"
+  },
+  {
+    "index": 82,
+    "code": "880898.SH",
+    "name": "近已解禁",
+    "type": "style"
+  },
+  {
+    "index": 83,
+    "code": "880578.SH",
+    "name": "专项贷款",
+    "type": "style"
+  },
+  {
+    "index": 84,
+    "code": "880894.SH",
+    "name": "养老金持股",
+    "type": "style"
+  },
+  {
+    "index": 85,
+    "code": "880871.SH",
+    "name": "股权分散",
+    "type": "style"
+  },
+  {
+    "index": 86,
+    "code": "880866.SH",
+    "name": "近期新低",
+    "type": "style"
+  },
+  {
+    "index": 87,
+    "code": "880531.SH",
+    "name": "低安全分",
+    "type": "style"
+  },
+  {
+    "index": 88,
+    "code": "880872.SH",
+    "name": "近期复牌",
+    "type": "style"
+  },
+  {
+    "index": 89,
+    "code": "880581.SH",
+    "name": "控制权变更",
+    "type": "style"
+  },
+  {
+    "index": 90,
+    "code": "880876.SH",
+    "name": "户数增加",
+    "type": "style"
+  },
+  {
+    "index": 91,
+    "code": "880721.SH",
+    "name": "北上重仓",
+    "type": "style"
+  },
+  {
+    "index": 92,
+    "code": "880699.SH",
+    "name": "最近情绪指数",
+    "type": "style"
+  },
+  {
+    "index": 93,
+    "code": "880694.SH",
+    "name": "活跃小盘国企",
+    "type": "style"
+  },
+  {
+    "index": 94,
+    "code": "880687.SH",
+    "name": "活跃小盘非融",
+    "type": "style"
+  },
+  {
+    "index": 95,
+    "code": "880804.SH",
+    "name": "信托重仓",
+    "type": "style"
+  },
+  {
+    "index": 96,
+    "code": "880806.SH",
+    "name": "社保重仓",
+    "type": "style"
+  },
+  {
+    "index": 97,
+    "code": "880821.SH",
+    "name": "大盘股",
+    "type": "style"
+  },
+  {
+    "index": 98,
+    "code": "880538.SH",
+    "name": "参股金融",
+    "type": "style"
+  },
+  {
+    "index": 99,
+    "code": "880653.SH",
+    "name": "私募重仓",
+    "type": "style"
+  },
+  {
+    "index": 100,
+    "code": "880570.SH",
+    "name": "高应收款",
+    "type": "style"
+  },
+  {
+    "index": 101,
+    "code": "880864.SH",
+    "name": "昨日振荡",
+    "type": "style"
+  },
+  {
+    "index": 102,
+    "code": "880680.SH",
+    "name": "非周期股",
+    "type": "style"
+  },
+  {
+    "index": 103,
+    "code": "880857.SH",
+    "name": "证金汇金持股",
+    "type": "style"
+  },
+  {
+    "index": 104,
+    "code": "880641.SH",
+    "name": "历史新低",
+    "type": "style"
+  },
+  {
+    "index": 105,
+    "code": "880883.SH",
+    "name": "MSCI成份",
+    "type": "style"
+  },
+  {
+    "index": 106,
+    "code": "880891.SH",
+    "name": "破发行价",
+    "type": "style"
+  },
+  {
+    "index": 107,
+    "code": "880763.SH",
+    "name": "自由现金流",
+    "type": "style"
+  },
+  {
+    "index": 108,
+    "code": "880873.SH",
+    "name": "个人持股",
+    "type": "style"
+  },
+  {
+    "index": 109,
+    "code": "880861.SH",
+    "name": "连续亏损",
+    "type": "style"
+  },
+  {
+    "index": 110,
+    "code": "880801.SH",
+    "name": "基金重仓",
+    "type": "style"
+  },
+  {
+    "index": 111,
+    "code": "880878.SH",
+    "name": "百元股",
+    "type": "style"
+  },
+  {
+    "index": 112,
+    "code": "880970.SH",
+    "name": "分拆上市预期",
+    "type": "style"
+  },
+  {
+    "index": 113,
+    "code": "880852.SH",
+    "name": "参股新股",
+    "type": "style"
+  },
+  {
+    "index": 114,
+    "code": "880536.SH",
+    "name": "微盘精选",
+    "type": "style"
+  },
+  {
+    "index": 115,
+    "code": "880698.SH",
+    "name": "宽基ETF",
+    "type": "style"
+  },
+  {
+    "index": 116,
+    "code": "880648.SH",
+    "name": "私募新进",
+    "type": "style"
+  },
+  {
+    "index": 117,
+    "code": "880813.SH",
+    "name": "并购重组预案",
+    "type": "style"
+  },
+  {
+    "index": 118,
+    "code": "880712.SH",
+    "name": "微小盘股",
+    "type": "style"
+  },
+  {
+    "index": 119,
+    "code": "880620.SH",
+    "name": "券商金股",
+    "type": "style"
+  },
+  {
+    "index": 120,
+    "code": "880842.SH",
+    "name": "业绩预升",
+    "type": "style"
+  },
+  {
+    "index": 121,
+    "code": "880963.SH",
+    "name": "昨日断板",
+    "type": "style"
+  },
+  {
+    "index": 122,
+    "code": "880603.SH",
+    "name": "新进指标股",
+    "type": "style"
+  },
+  {
+    "index": 123,
+    "code": "880822.SH",
+    "name": "昨收活跃",
+    "type": "style"
+  },
+  {
+    "index": 124,
+    "code": "880854.SH",
+    "name": "预高送转",
+    "type": "style"
+  },
+  {
+    "index": 125,
+    "code": "880818.SH",
+    "name": "通达信热股",
+    "type": "style"
+  },
+  {
+    "index": 126,
+    "code": "880783.SH",
+    "name": "社保新进",
+    "type": "style"
+  },
+  {
+    "index": 127,
+    "code": "880679.SH",
+    "name": "周期股",
+    "type": "style"
+  },
+  {
+    "index": 128,
+    "code": "880884.SH",
+    "name": "最近异动",
+    "type": "style"
+  },
+  {
+    "index": 129,
+    "code": "880790.SH",
+    "name": "高负债率",
+    "type": "style"
+  },
+  {
+    "index": 130,
+    "code": "880817.SH",
+    "name": "商誉减值",
+    "type": "style"
+  },
+  {
+    "index": 131,
+    "code": "880896.SH",
+    "name": "风险提示",
+    "type": "style"
+  },
+  {
+    "index": 132,
+    "code": "880771.SH",
+    "name": "MSCI中盘",
+    "type": "style"
+  },
+  {
+    "index": 133,
+    "code": "880850.SH",
+    "name": "定增预案",
+    "type": "style"
+  },
+  {
+    "index": 134,
+    "code": "880890.SH",
+    "name": "配股预案",
+    "type": "style"
+  },
+  {
+    "index": 135,
+    "code": "880947.SH",
+    "name": "化债AMC",
+    "type": "style"
+  },
+  {
+    "index": 136,
+    "code": "880784.SH",
+    "name": "昨日较弱",
+    "type": "style"
+  },
+  {
+    "index": 137,
+    "code": "880881.SH",
+    "name": "近期弱势",
+    "type": "style"
+  },
+  {
+    "index": 138,
+    "code": "880882.SH",
+    "name": "久不分红",
+    "type": "style"
+  },
+  {
+    "index": 139,
+    "code": "880835.SH",
+    "name": "绩优股",
+    "type": "style"
+  },
+  {
+    "index": 140,
+    "code": "880559.SH",
+    "name": "要约收购",
+    "type": "style"
+  },
+  {
+    "index": 141,
+    "code": "880892.SH",
+    "name": "高质押股",
+    "type": "style"
+  },
+  {
+    "index": 142,
+    "code": "880802.SH",
+    "name": "QFII重仓",
+    "type": "style"
+  },
+  {
+    "index": 143,
+    "code": "880789.SH",
+    "name": "昨成交20",
+    "type": "style"
+  },
+  {
+    "index": 144,
+    "code": "880691.SH",
+    "name": "昨日弱势",
+    "type": "style"
+  },
+  {
+    "index": 145,
+    "code": "880781.SH",
+    "name": "QFII新进",
+    "type": "style"
+  },
+  {
+    "index": 146,
+    "code": "880562.SH",
+    "name": "高校背景",
+    "type": "style"
+  },
+  {
+    "index": 147,
+    "code": "880082.SH",
+    "name": "板块趋势",
+    "type": "style"
+  },
+  {
+    "index": 148,
+    "code": "880979.SH",
+    "name": "科创成长层",
+    "type": "style"
+  },
+  {
+    "index": 149,
+    "code": "880827.SH",
+    "name": "高市净率",
+    "type": "style"
+  },
+  {
+    "index": 150,
+    "code": "880756.SH",
+    "name": "机构吸筹",
+    "type": "style"
+  },
+  {
+    "index": 151,
+    "code": "880779.SH",
+    "name": "高融资盘",
+    "type": "style"
+  },
+  {
+    "index": 152,
+    "code": "880887.SH",
+    "name": "次新超跌",
+    "type": "style"
+  },
+  {
+    "index": 153,
+    "code": "880554.SH",
+    "name": "科创板次新",
+    "type": "style"
+  },
+  {
+    "index": 154,
+    "code": "880786.SH",
+    "name": "海外业务",
+    "type": "style"
+  },
+  {
+    "index": 155,
+    "code": "880792.SH",
+    "name": "基金增仓",
+    "type": "style"
+  },
+  {
+    "index": 156,
+    "code": "880885.SH",
+    "name": "近端次新",
+    "type": "style"
+  },
+  {
+    "index": 157,
+    "code": "880844.SH",
+    "name": "预计扭亏",
+    "type": "style"
+  },
+  {
+    "index": 158,
+    "code": "880619.SH",
+    "name": "业绩预增",
+    "type": "style"
+  }
+]
