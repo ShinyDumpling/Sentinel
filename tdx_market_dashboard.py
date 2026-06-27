@@ -23,7 +23,7 @@ if hasattr(sys.stdout, "reconfigure"):
 if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
-N = 25  # 拉最近25根日K，保证能算20日涨幅
+N = 21  # 拉最近21根日K，够算20日涨幅（c[-1] vs c[-21]）
 TOP_N = 15  # 每个榜单取前15名
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -484,10 +484,6 @@ def main():
             chg20 = pct(c.iloc[-1], c.iloc[-21]) if len(c) >= 21 else float("nan")
             amt_yi = float(a.iloc[-1]) / 10000
 
-            # 主力净流入
-            fund = tq.get_more_info(stock_code=code, field_list=["Zjl_HB"])
-            zjl_hb_str = fund.get("Zjl_HB")
-            zjl_hb = float(zjl_hb_str) / 10000 if zjl_hb_str and zjl_hb_str != "" else float("nan")
             block_type = get_block_type(code, block_type_map)
             if block_type == "unknown":
                 unknown_type_codes.append(code)
@@ -500,7 +496,7 @@ def main():
                 "当日涨幅%": round(chg1, 2),
                 "20日涨幅%": round(chg20, 2) if chg20 == chg20 else None,
                 "成交额亿": round(amt_yi, 1),
-                "主力净流入亿": round(zjl_hb, 2) if zjl_hb == zjl_hb else None,
+                "主力净流入亿": None,  # 先占位，排序后再补
             })
         except Exception as e:
             fail += 1
@@ -555,6 +551,24 @@ def main():
     concept_rows = [r for r in rows_filtered if r["类型代码"] == "theme"]
     concept_top = sorted(concept_rows, key=lambda r: r["当日涨幅%"] if r["当日涨幅%"] is not None else -999, reverse=True)[:TOP_N]
     concept_bottom = sorted(concept_rows, key=lambda r: r["当日涨幅%"] if r["当日涨幅%"] is not None else 999)[:TOP_N]
+
+    # 收集上榜板块代码，批量补主力净流入
+    top_codes = set()
+    for r in industry_top + industry_bottom + concept_top + concept_bottom:
+        top_codes.add(r["代码"])
+    print(f"\n上榜板块共 {len(top_codes)} 个，补拉主力净流入...")
+    fund_map = {}
+    for code in top_codes:
+        try:
+            fund = tq.get_more_info(stock_code=code, field_list=["Zjl_HB"])
+            zjl_hb_str = fund.get("Zjl_HB")
+            fund_map[code] = float(zjl_hb_str) / 10000 if zjl_hb_str and zjl_hb_str != "" else float("nan")
+        except Exception:
+            fund_map[code] = float("nan")
+    # 回填到 rows 中
+    for r in industry_top + industry_bottom + concept_top + concept_bottom:
+        zjl = fund_map.get(r["代码"])
+        r["主力净流入亿"] = round(zjl, 2) if zjl == zjl else None
 
     print("\n" + "=" * 72)
     print(f">>> 🚀 概念板块热度榜 Top {TOP_N} (按当日涨幅排序)")
