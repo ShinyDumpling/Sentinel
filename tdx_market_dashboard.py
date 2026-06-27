@@ -12,6 +12,7 @@
 import os
 import sys
 import json
+import time
 from collections import Counter
 from pathlib import Path
 
@@ -124,9 +125,8 @@ def judge_dashboard_with_llm(asof, index_rows, industry_top, concept_top, market
     resp = client.chat.completions.create(
         model=s["model"],
         temperature=0.2,
-        response_format={"type": "json_object"},
         messages=[
-            {"role": "system", "content": "你是一个克制、说大白话、面向A股新手的大盘解读助手。"},
+            {"role": "system", "content": "你是一个克制、说大白话、面向A股新手的大盘解读助手。你只输出 JSON，不要输出任何其他文字、解释或 markdown 标记。"},
             {"role": "user", "content": prompt},
         ],
         timeout=120,
@@ -219,9 +219,8 @@ def judge_style_with_llm(asof, index_rows):
     resp = client.chat.completions.create(
         model=s["model"],
         temperature=0.1,
-        response_format={"type": "json_object"},
         messages=[
-            {"role": "system", "content": "你是一个克制、直接、只根据指数数据判断A股风格的分析助手。"},
+            {"role": "system", "content": "你是一个克制、直接、只根据指数数据判断A股风格的分析助手。你只输出 JSON，不要输出任何其他文字、解释或 markdown 标记。"},
             {"role": "user", "content": prompt},
         ],
         timeout=120,
@@ -326,9 +325,8 @@ def judge_sector_intent_with_llm(asof, style_verdict, industry_top, industry_bot
     resp = client.chat.completions.create(
         model=s["model"],
         temperature=0.1,
-        response_format={"type": "json_object"},
         messages=[
-            {"role": "system", "content": "你是一个克制、直接、只根据指数和板块数据判断A股资金意图的分析助手。"},
+            {"role": "system", "content": "你是一个克制、直接、只根据指数和板块数据判断A股资金意图的分析助手。你只输出 JSON，不要输出任何其他文字、解释或 markdown 标记。"},
             {"role": "user", "content": prompt},
         ],
         timeout=120,
@@ -345,8 +343,11 @@ def judge_sector_intent_with_llm(asof, style_verdict, industry_top, industry_bot
 def main():
     use_llm = "--no-llm" not in sys.argv
 
+    t0_total = time.perf_counter()
+
+    t0 = time.perf_counter()
     tq.initialize(__file__)
-    print(">>> tq 初始化完成")
+    print(f">>> tq 初始化完成 [⏱ {time.perf_counter() - t0:.1f}s]")
 
     # =========================================================================
     # 第一部分：6大宽基指数
@@ -354,6 +355,8 @@ def main():
     print("\n" + "=" * 72)
     print(">>> 1. 6大宽基指数")
     print("=" * 72)
+
+    t0 = time.perf_counter()
 
     index_codes = [
         ("000001.SH", "上证指数"),
@@ -416,6 +419,7 @@ def main():
 
     total_amt = sum(r["成交额亿"] for r in index_rows if r["成交额亿"])
     print(f"\n全市场总成交额: {total_amt:.1f} 亿")
+    print(f"[⏱ 6大宽基指数耗时 {time.perf_counter() - t0:.1f}s]")
 
     # 第一部分+：市场广度 —— 涨跌家数 / 涨跌停统计
     # 当前为提速已停用；后续如果要恢复市场广度分析，再放开下面这整段逻辑。
@@ -427,6 +431,8 @@ def main():
     print("\n" + "=" * 72)
     print(">>> 2. 板块热度榜 (计算中...)")
     print("=" * 72)
+
+    t0 = time.perf_counter()
 
     block_type_map = load_block_type_map()
     blocks = tq.get_sector_list(list_type=1)  # 全部587个板块
@@ -561,6 +567,8 @@ def main():
         name_with_type = f"{r['名称']}{r['类型']}"
         print(f"{i:<4}{name_with_type:<20}{r['当日涨幅%']:>8.2f}{chg20_str:>8}{net_str:>14}")
 
+    print(f"\n[⏱ 板块热度榜耗时 {time.perf_counter() - t0:.1f}s]")
+
     # 旧版 LLM 大白话解读逻辑已停用，后续如需对比可恢复：
     # verdict = judge_dashboard_with_llm(asof, index_rows, industry_top, concept_top, market_breadth)
 
@@ -573,15 +581,18 @@ def main():
         print("\n" + "=" * 72)
         print(">>> 🤖 LLM 最近市场风格判断")
         print("=" * 72)
+        t0 = time.perf_counter()
         style_verdict = judge_style_with_llm(asof, index_rows)
         if style_verdict.get("状态"):
             print(f"[{style_verdict.get('状态')}] {style_verdict.get('原因') or style_verdict.get('原始返回','')}")
         else:
             print(json.dumps(style_verdict, ensure_ascii=False, indent=2))
+        print(f"[⏱ LLM风格判断耗时 {time.perf_counter() - t0:.1f}s]")
 
         print("\n" + "=" * 72)
         print(">>> 🤖 LLM 市场资金意图判断")
         print("=" * 72)
+        t0 = time.perf_counter()
         intent_verdict = judge_sector_intent_with_llm(
             asof,
             style_verdict if isinstance(style_verdict, dict) else {},
@@ -594,11 +605,12 @@ def main():
             print(f"[{intent_verdict.get('状态')}] {intent_verdict.get('原因') or intent_verdict.get('原始返回','')}")
         else:
             print(json.dumps(intent_verdict, ensure_ascii=False, indent=2))
+        print(f"[⏱ LLM资金意图判断耗时 {time.perf_counter() - t0:.1f}s]")
     else:
         print("\n(已用 --no-llm 跳过 LLM 风格判断)")
 
     print("\n" + "=" * 72)
-    print(">>> 完成")
+    print(f">>> 完成 [总耗时 {time.perf_counter() - t0_total:.1f}s]")
     print("=" * 72)
 
     try:
