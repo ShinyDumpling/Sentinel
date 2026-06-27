@@ -38,6 +38,11 @@ BLOCK_TYPE_LABELS = {
     "unknown": "【未分类】",
 }
 RANKABLE_BLOCK_TYPES = {"industry", "theme"}
+KEY_BLOCKS_PER_BUCKET = 2
+LEADER_CANDIDATE_COUNT = 3
+MIDDLE_ARMY_CANDIDATE_COUNT = 3
+LIMIT_UP_THRESHOLD = 9.5
+LIMIT_DOWN_THRESHOLD = -9.5
 
 
 def pct(a, b):
@@ -69,6 +74,225 @@ def get_block_type_display(code, block_type_map):
     meta = block_type_map.get(code, {})
     type_code = meta.get("type", "unknown")
     return get_block_type_label(type_code)
+
+
+def safe_float(value):
+    try:
+        if value in (None, ""):
+            return None
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def sort_key_desc(value, default=-999999):
+    return value if value is not None else default
+
+
+def pick_key_blocks(industry_top, industry_bottom, concept_top, concept_bottom):
+    ordered = []
+    seen = set()
+    groups = [
+        ("行业Top", industry_top[:KEY_BLOCKS_PER_BUCKET]),
+        ("行业Bottom", industry_bottom[:KEY_BLOCKS_PER_BUCKET]),
+        ("概念Top", concept_top[:KEY_BLOCKS_PER_BUCKET]),
+        ("概念Bottom", concept_bottom[:KEY_BLOCKS_PER_BUCKET]),
+    ]
+    for source, rows in groups:
+        for row in rows:
+            code = row["代码"]
+            if code in seen:
+                continue
+            seen.add(code)
+            copied = dict(row)
+            copied["来源榜单"] = source
+            ordered.append(copied)
+    return ordered
+
+
+def brief_stock_row(row, name_cache):
+    code = row["代码"]
+    name = name_cache.get(code, code)
+    chg = row.get("涨跌幅%")
+    amt = row.get("成交额亿")
+    lianban = row.get("连板数")
+    parts = [name]
+    if chg is not None:
+        parts.append(f"{chg:+.2f}%")
+    if amt is not None:
+        parts.append(f"{amt:.1f}亿")
+    if lianban is not None and lianban >= 2:
+        parts.append(f"{int(round(lianban))}连板")
+    return " / ".join(parts)
+
+
+def classify_block_action(block_row, member_rows):
+    board_chg = block_row.get("当日涨幅%")
+    board_net = block_row.get("主力净流入亿")
+    total = len(member_rows)
+    if total == 0:
+        return "数据不足", ["成分股数据为空，无法判断板块内部结构"]
+
+    up = sum(1 for row in member_rows if (row.get("涨跌幅%") or 0) > 0)
+    down = sum(1 for row in member_rows if (row.get("涨跌幅%") or 0) < 0)
+    flat = total - up - down
+    limit_up = sum(1 for row in member_rows if (row.get("涨跌幅%") or -999) >= LIMIT_UP_THRESHOLD)
+    limit_down = sum(1 for row in member_rows if (row.get("涨跌幅%") or 999) <= LIMIT_DOWN_THRESHOLD)
+    up_ratio = up / total if total else 0
+    down_ratio = down / total if total else 0
+
+    reasons = [
+        f"成分股上涨 {up} 家，下跌 {down} 家，平盘 {flat} 家",
+        f"涨停 {limit_up} 家，跌停 {limit_down} 家",
+    ]
+    if board_net is not None:
+        reasons.append(f"板块主力净流入 {board_net:+.2f} 亿")
+
+    if board_chg is None:
+        return "数据不足", reasons
+
+    if board_chg >= 0:
+        if up_ratio >= 0.6 and (board_net is None or board_net >= 0) and limit_up >= 1:
+            return "真上涨", reasons
+        if up_ratio <= 0.45 or (board_net is not None and board_net < 0):
+            return "疑似虚涨", reasons
+        if up_ratio >= 0.5:
+            return "分化上涨", reasons
+        return "偏弱上涨", reasons
+
+    if down_ratio >= 0.6 and (board_net is None or board_net <= 0):
+        return "真下跌", reasons
+    if up_ratio >= 0.35:
+        return "分化下跌", reasons
+    if board_net is not None and board_net > 0:
+        return "疑似承接下跌", reasons
+    return "偏弱下跌", reasons
+
+
+def analyze_key_block_members(key_blocks):
+    if not key_blocks:
+        return []
+
+    block_members = {}
+    all_member_codes = []
+    seen_member_codes = set()
+
+    for block in key_blocks:
+        members = tq.get_stock_list_in_sector(block["代码"]) or []
+        members = [code for code in members if isinstance(code, str) and code]
+        block_members[block["代码"]] = members
+        for code in members:
+            if code not in seen_member_codes:
+                seen_member_codes.add(code)
+                all_member_codes.append(code)
+
+    amount_df = None
+    if all_member_codes:
+        try:
+            market_res = tq.get_market_data(
+                field_list=["Amount"],
+                stock_list=all_member_codes,
+                period="1d",
+                count=1,
+                dividend_type="none",
+                fill_data=True,
+            )
+            amount_df = market_res.get("Amount")
+        except Exception:
+            amount_df = None
+
+    member_cache = {}
+    for code in all_member_codes:
+        extra = tq.get_more_info(stock_code=code, field_list=["ZAF", "fLianB"])
+        amount_yi = None
+        if amount_df is not None and code in amount_df.columns:
+            try:
+                amount_yi = float(amount_df[code].sort_index().iloc[-1]) / 10000
+            except Exception:
+                amount_yi = None
+        member_cache[code] = {
+            "代码": code,
+            "涨跌幅%": safe_float(extra.get("ZAF")),
+            "连板数": safe_float(extra.get("fLianB")),
+            "成交额亿": round(amount_yi, 2) if amount_yi is not None else None,
+        }
+
+    display_codes = []
+    analyses = []
+    for block in key_blocks:
+        members = [dict(member_cache[code]) for code in block_members.get(block["代码"], []) if code in member_cache]
+        members_sorted = sorted(
+            members,
+            key=lambda row: (
+                sort_key_desc(row.get("涨跌幅%")),
+                sort_key_desc(row.get("成交额亿"), 0),
+                sort_key_desc(row.get("连板数"), 0),
+            ),
+            reverse=True,
+        )
+        middle_army_sorted = sorted(
+            members,
+            key=lambda row: (
+                sort_key_desc(row.get("成交额亿"), 0),
+                sort_key_desc(row.get("涨跌幅%")),
+                sort_key_desc(row.get("连板数"), 0),
+            ),
+            reverse=True,
+        )
+        limit_up_rows = [row for row in members_sorted if (row.get("涨跌幅%") or -999) >= LIMIT_UP_THRESHOLD]
+        limit_down_rows = [row for row in members_sorted if (row.get("涨跌幅%") or 999) <= LIMIT_DOWN_THRESHOLD]
+        action_label, reasons = classify_block_action(block, members)
+
+        selected = (
+            limit_up_rows[:LEADER_CANDIDATE_COUNT]
+            + members_sorted[:LEADER_CANDIDATE_COUNT]
+            + middle_army_sorted[:MIDDLE_ARMY_CANDIDATE_COUNT]
+        )
+        seen_display = set()
+        for row in selected:
+            code = row["代码"]
+            if code not in seen_display:
+                seen_display.add(code)
+                display_codes.append(code)
+
+        total = len(members)
+        up = sum(1 for row in members if (row.get("涨跌幅%") or 0) > 0)
+        down = sum(1 for row in members if (row.get("涨跌幅%") or 0) < 0)
+        analyses.append({
+            "代码": block["代码"],
+            "名称": block["名称"],
+            "类型代码": block["类型代码"],
+            "类型": block["类型"],
+            "来源榜单": block["来源榜单"],
+            "当日涨幅%": block.get("当日涨幅%"),
+            "20日涨幅%": block.get("20日涨幅%"),
+            "主力净流入亿": block.get("主力净流入亿"),
+            "成分股数": total,
+            "上涨家数": up,
+            "下跌家数": down,
+            "平盘家数": total - up - down,
+            "上涨占比%": round(up * 100 / total, 1) if total else None,
+            "下跌占比%": round(down * 100 / total, 1) if total else None,
+            "涨停家数": len(limit_up_rows),
+            "跌停家数": len(limit_down_rows),
+            "状态判断": action_label,
+            "判断依据": reasons,
+            "_涨停候选": limit_up_rows[:LEADER_CANDIDATE_COUNT],
+            "_龙头候选": members_sorted[:LEADER_CANDIDATE_COUNT],
+            "_中军候选": middle_army_sorted[:MIDDLE_ARMY_CANDIDATE_COUNT],
+        })
+
+    name_cache = {}
+    for code in dict.fromkeys(display_codes):
+        info = tq.get_stock_info(code, field_list=["Name"])
+        name_cache[code] = info.get("Name", code)
+
+    for analysis in analyses:
+        analysis["涨停股"] = [brief_stock_row(row, name_cache) for row in analysis.pop("_涨停候选")]
+        analysis["龙头候选"] = [brief_stock_row(row, name_cache) for row in analysis.pop("_龙头候选")]
+        analysis["中军候选"] = [brief_stock_row(row, name_cache) for row in analysis.pop("_中军候选")]
+
+    return analyses
 
 
 def _get_llm_settings():
@@ -234,7 +458,15 @@ def judge_style_with_llm(asof, index_rows):
     return parsed
 
 
-def judge_sector_intent_with_llm(asof, style_verdict, industry_top, industry_bottom, concept_top, concept_bottom):
+def judge_sector_intent_with_llm(
+    asof,
+    style_verdict,
+    industry_top,
+    industry_bottom,
+    concept_top,
+    concept_bottom,
+    key_block_analyses,
+):
     """根据行业/概念板块榜与指数背景，判断市场资金意图。"""
     s = _get_llm_settings()
     if not s["api_key"] or not s["model"] or not s["base_url"]:
@@ -252,6 +484,7 @@ def judge_sector_intent_with_llm(asof, style_verdict, industry_top, industry_bot
         "行业板块Bottom榜": industry_bottom,
         "概念板块Top榜": concept_top,
         "概念板块Bottom榜": concept_bottom,
+        "重点板块成分股验证": key_block_analyses,
     }, ensure_ascii=False, indent=2)
 
     prompt = f"""你是一个A股盘面资金意图分析助手。
@@ -272,6 +505,12 @@ def judge_sector_intent_with_llm(asof, style_verdict, industry_top, industry_bot
 - 成交额亿
 - 主力净流入亿
 
+你还会看到部分重点板块的成分股验证结果，包括：
+- 成分股上涨/下跌/平盘家数
+- 涨停家数、跌停家数
+- 板块状态判断（真上涨、疑似虚涨、分化上涨、真下跌、分化下跌等）
+- 涨停股、龙头候选、中军候选（这些只是板块内部结构证据，不是让你点评个股）
+
 你还会看到宽基指数风格判断结果，作为辅助背景。
 
 请重点分析：
@@ -280,6 +519,8 @@ def judge_sector_intent_with_llm(asof, style_verdict, industry_top, industry_bot
 - 板块上涨是否伴随成交活跃和主力净流入
 - 板块下跌是否显示出资金在主动回避某些方向
 - 是单一方向占优，还是多方向混合轮动
+- 板块上涨是否得到成分股广度、涨停数量、龙头/中军配合，还是只有少数个股在拉抬
+- 板块下跌是整体被抛弃，还是指数权重回落但板块内部并未全面走弱
 
 请同时参考上涨板块和下跌板块：
 - 上涨榜代表资金短线偏好的方向
@@ -301,6 +542,7 @@ def judge_sector_intent_with_llm(asof, style_verdict, industry_top, industry_bot
 - 不要补充输入中没有提供的消息面、政策面信息
 - 不要直接给买卖建议
 - 你的任务只是推断“市场资金意图”
+- 可以引用成分股内部结构作为证据，但不要把输出写成个股点评
 
 如果板块信号互相矛盾，不要只给出“混合轮动”或“无明显方向”这种笼统结论。
 你必须明确指出矛盾点来自哪里，例如：
@@ -514,48 +756,17 @@ def main():
     print(f"过滤后剩余: {len(rows_filtered)} 个")
 
     # =========================================================================
-    # 第三部分：行业板块热度榜 Top15
+    # 第三部分：行业 / 概念板块榜单
     # =========================================================================
     industry_rows = [r for r in rows_filtered if r["类型代码"] == "industry"]
+    concept_rows = [r for r in rows_filtered if r["类型代码"] == "theme"]
     industry_top = sorted(industry_rows, key=lambda r: r["当日涨幅%"] if r["当日涨幅%"] is not None else -999, reverse=True)[:TOP_N]
     industry_bottom = sorted(industry_rows, key=lambda r: r["当日涨幅%"] if r["当日涨幅%"] is not None else 999)[:TOP_N]
-
-    print("\n" + "=" * 72)
-    print(f">>> 🔥 行业板块热度榜 Top {TOP_N} (按当日涨幅排序)")
-    print("=" * 72)
-    header = f"{'排名':<4}{'板块':<20}{'当日%':>8}{'20日%':>8}{'主力净流入亿':>14}"
-    print("-" * 72)
-    print(header)
-    print("-" * 72)
-    for i, r in enumerate(industry_top, 1):
-        chg20_str = f"{r['20日涨幅%']:.2f}" if r['20日涨幅%'] is not None else "-"
-        net_str = f"{r['主力净流入亿']}" if r['主力净流入亿'] is not None else "-"
-        name_with_type = f"{r['名称']}{r['类型']}"
-        print(f"{i:<4}{name_with_type:<20}{r['当日涨幅%']:>8.2f}{chg20_str:>8}{net_str:>14}")
-
-    print("\n" + "=" * 72)
-    print(f">>> 📉 行业板块跌幅榜 Bottom {TOP_N} (按当日涨幅排序)")
-    print("=" * 72)
-    print("-" * 72)
-    print(header)
-    print("-" * 72)
-    for i, r in enumerate(industry_bottom, 1):
-        chg20_str = f"{r['20日涨幅%']:.2f}" if r['20日涨幅%'] is not None else "-"
-        net_str = f"{r['主力净流入亿']}" if r['主力净流入亿'] is not None else "-"
-        name_with_type = f"{r['名称']}{r['类型']}"
-        print(f"{i:<4}{name_with_type:<20}{r['当日涨幅%']:>8.2f}{chg20_str:>8}{net_str:>14}")
-
-    # =========================================================================
-    # 第四部分：概念板块热度榜 Top15
-    # =========================================================================
-    concept_rows = [r for r in rows_filtered if r["类型代码"] == "theme"]
     concept_top = sorted(concept_rows, key=lambda r: r["当日涨幅%"] if r["当日涨幅%"] is not None else -999, reverse=True)[:TOP_N]
     concept_bottom = sorted(concept_rows, key=lambda r: r["当日涨幅%"] if r["当日涨幅%"] is not None else 999)[:TOP_N]
 
-    # 收集上榜板块代码，批量补主力净流入
-    top_codes = set()
-    for r in industry_top + industry_bottom + concept_top + concept_bottom:
-        top_codes.add(r["代码"])
+    ranked_blocks = industry_top + industry_bottom + concept_top + concept_bottom
+    top_codes = {r["代码"] for r in ranked_blocks}
     print(f"\n上榜板块共 {len(top_codes)} 个，补拉主力净流入...")
     fund_map = {}
     for code in top_codes:
@@ -565,34 +776,55 @@ def main():
             fund_map[code] = float(zjl_hb_str) / 10000 if zjl_hb_str and zjl_hb_str != "" else float("nan")
         except Exception:
             fund_map[code] = float("nan")
-    # 回填到 rows 中
-    for r in industry_top + industry_bottom + concept_top + concept_bottom:
+
+    for r in ranked_blocks:
         zjl = fund_map.get(r["代码"])
         r["主力净流入亿"] = round(zjl, 2) if zjl == zjl else None
 
-    print("\n" + "=" * 72)
-    print(f">>> 🚀 概念板块热度榜 Top {TOP_N} (按当日涨幅排序)")
-    print("=" * 72)
-    print("-" * 72)
-    print(header)
-    print("-" * 72)
-    for i, r in enumerate(concept_top, 1):
-        chg20_str = f"{r['20日涨幅%']:.2f}" if r['20日涨幅%'] is not None else "-"
-        net_str = f"{r['主力净流入亿']}" if r['主力净流入亿'] is not None else "-"
-        name_with_type = f"{r['名称']}{r['类型']}"
-        print(f"{i:<4}{name_with_type:<20}{r['当日涨幅%']:>8.2f}{chg20_str:>8}{net_str:>14}")
+    header = f"{'排名':<4}{'板块':<20}{'当日%':>8}{'20日%':>8}{'主力净流入亿':>14}"
+
+    def print_block_rank(title, rows_to_print):
+        print("\n" + "=" * 72)
+        print(title)
+        print("=" * 72)
+        print("-" * 72)
+        print(header)
+        print("-" * 72)
+        for i, r in enumerate(rows_to_print, 1):
+            chg20_str = f"{r['20日涨幅%']:.2f}" if r['20日涨幅%'] is not None else "-"
+            net_str = f"{r['主力净流入亿']}" if r['主力净流入亿'] is not None else "-"
+            name_with_type = f"{r['名称']}{r['类型']}"
+            print(f"{i:<4}{name_with_type:<20}{r['当日涨幅%']:>8.2f}{chg20_str:>8}{net_str:>14}")
+
+    print_block_rank(f">>> 🔥 行业板块热度榜 Top {TOP_N} (按当日涨幅排序)", industry_top)
+    print_block_rank(f">>> 📉 行业板块跌幅榜 Bottom {TOP_N} (按当日涨幅排序)", industry_bottom)
+    print_block_rank(f">>> 🚀 概念板块热度榜 Top {TOP_N} (按当日涨幅排序)", concept_top)
+    print_block_rank(f">>> 📉 概念板块跌幅榜 Bottom {TOP_N} (按当日涨幅排序)", concept_bottom)
+
+    key_blocks = pick_key_blocks(industry_top, industry_bottom, concept_top, concept_bottom)
+    print(f"\n重点板块成分股验证: 计划分析 {len(key_blocks)} 个板块...")
+    key_block_analyses = analyze_key_block_members(key_blocks)
 
     print("\n" + "=" * 72)
-    print(f">>> 📉 概念板块跌幅榜 Bottom {TOP_N} (按当日涨幅排序)")
+    print(">>> 3. 重点板块成分股验证")
     print("=" * 72)
-    print("-" * 72)
-    print(header)
-    print("-" * 72)
-    for i, r in enumerate(concept_bottom, 1):
-        chg20_str = f"{r['20日涨幅%']:.2f}" if r['20日涨幅%'] is not None else "-"
-        net_str = f"{r['主力净流入亿']}" if r['主力净流入亿'] is not None else "-"
-        name_with_type = f"{r['名称']}{r['类型']}"
-        print(f"{i:<4}{name_with_type:<20}{r['当日涨幅%']:>8.2f}{chg20_str:>8}{net_str:>14}")
+    for analysis in key_block_analyses:
+        board_net = analysis["主力净流入亿"]
+        board_net_str = f"{board_net:+.2f}亿" if board_net is not None else "-"
+        chg20_str = f"{analysis['20日涨幅%']:+.2f}%" if analysis["20日涨幅%"] is not None else "-"
+        print(
+            f"\n{analysis['名称']}{analysis['类型']} [{analysis['来源榜单']}] "
+            f"当日 {analysis['当日涨幅%']:+.2f}% / 20日 {chg20_str} / 主力 {board_net_str}"
+        )
+        print(
+            f"状态: {analysis['状态判断']} | 成分股 {analysis['成分股数']} 家 | "
+            f"上涨 {analysis['上涨家数']} | 下跌 {analysis['下跌家数']} | 平盘 {analysis['平盘家数']} | "
+            f"涨停 {analysis['涨停家数']} | 跌停 {analysis['跌停家数']}"
+        )
+        print("依据: " + "；".join(analysis["判断依据"]))
+        print("涨停股: " + ("；".join(analysis["涨停股"]) if analysis["涨停股"] else "无"))
+        print("龙头候选: " + ("；".join(analysis["龙头候选"]) if analysis["龙头候选"] else "无"))
+        print("中军候选: " + ("；".join(analysis["中军候选"]) if analysis["中军候选"] else "无"))
 
     print(f"\n[⏱ 板块热度榜耗时 {time.perf_counter() - t0:.1f}s]")
 
@@ -627,6 +859,7 @@ def main():
             industry_bottom,
             concept_top,
             concept_bottom,
+            key_block_analyses,
         )
         if intent_verdict.get("状态"):
             print(f"[{intent_verdict.get('状态')}] {intent_verdict.get('原因') or intent_verdict.get('原始返回','')}")
