@@ -277,8 +277,11 @@ def analyze_key_block_members(key_blocks):
             "状态判断": action_label,
             "判断依据": reasons,
             "_涨停候选": limit_up_rows[:LEADER_CANDIDATE_COUNT],
+            "_涨停候选_raw": limit_up_rows[:LEADER_CANDIDATE_COUNT],
             "_龙头候选": members_sorted[:LEADER_CANDIDATE_COUNT],
+            "_龙头候选_raw": members_sorted[:LEADER_CANDIDATE_COUNT],
             "_中军候选": middle_army_sorted[:MIDDLE_ARMY_CANDIDATE_COUNT],
+            "_中军候选_raw": middle_army_sorted[:MIDDLE_ARMY_CANDIDATE_COUNT],
         })
 
     name_cache = {}
@@ -288,8 +291,11 @@ def analyze_key_block_members(key_blocks):
 
     for analysis in analyses:
         analysis["涨停股"] = [brief_stock_row(row, name_cache) for row in analysis.pop("_涨停候选")]
+        analysis["涨停股名"] = [name_cache.get(row["代码"], row["代码"]) for row in analysis.pop("_涨停候选_raw")]
         analysis["龙头候选"] = [brief_stock_row(row, name_cache) for row in analysis.pop("_龙头候选")]
+        analysis["龙头候选名"] = [name_cache.get(row["代码"], row["代码"]) for row in analysis.pop("_龙头候选_raw")]
         analysis["中军候选"] = [brief_stock_row(row, name_cache) for row in analysis.pop("_中军候选")]
+        analysis["中军候选名"] = [name_cache.get(row["代码"], row["代码"]) for row in analysis.pop("_中军候选_raw")]
 
     return analyses
 
@@ -812,22 +818,39 @@ def main():
     print(">>> 3. 重点板块成分股验证")
     print("=" * 72)
     for analysis in key_block_analyses:
-        board_net = analysis["主力净流入亿"]
-        board_net_str = f"{board_net:+.2f}亿" if board_net is not None else "-"
-        chg20_str = f"{analysis['20日涨幅%']:+.2f}%" if analysis["20日涨幅%"] is not None else "-"
-        print(
-            f"\n{analysis['名称']}{analysis['类型']} [{analysis['来源榜单']}] "
-            f"当日 {analysis['当日涨幅%']:+.2f}% / 20日 {chg20_str} / 主力 {board_net_str}"
-        )
-        print(
-            f"状态: {analysis['状态判断']} | 成分股 {analysis['成分股数']} 家 | "
-            f"上涨 {analysis['上涨家数']} | 下跌 {analysis['下跌家数']} | 平盘 {analysis['平盘家数']} | "
-            f"涨停 {analysis['涨停家数']} | 跌停 {analysis['跌停家数']}"
-        )
-        print("依据: " + "；".join(analysis["判断依据"]))
-        print("涨停股: " + ("；".join(analysis["涨停股"]) if analysis["涨停股"] else "无"))
-        print("龙头候选: " + ("；".join(analysis["龙头候选"]) if analysis["龙头候选"] else "无"))
-        print("中军候选: " + ("；".join(analysis["中军候选"]) if analysis["中军候选"] else "无"))
+        code = analysis.get("代码", "")
+        pure_code = code.replace(".SH", "").replace(".SZ", "").replace(".BJ", "")
+        chg = analysis["当日涨幅%"]
+        chg_str = f"{chg:+.2f}%" if chg is not None else "-"
+        total = analysis["成分股数"]
+        up = analysis["上涨家数"]
+        down = analysis["下跌家数"]
+        flat = analysis["平盘家数"]
+        limit_up = analysis["涨停家数"]
+        # 第1行：板块名(代码) + 涨幅 + 成分股 + 涨跌平 + 涨停
+        parts = [
+            f"🔥 {analysis['名称']}({pure_code})",
+            chg_str,
+            f"成分股{total}只",
+            f"上涨{up}",
+            f"下跌{down}",
+            f"平盘{flat}",
+        ]
+        if limit_up > 0:
+            parts.append(f"涨停{limit_up}")
+        print(f"\n  {'  '.join(parts)}")
+        # 第2行：龙头 + 中军 + 涨停股（纯名字）
+        leaders = "、".join(analysis.get("龙头候选名", [])[:3]) or "-"
+        middles = "、".join(analysis.get("中军候选名", [])[:3]) or "-"
+        limit_up_names = analysis.get("涨停股名", [])
+        if limit_up_names:
+            if len(limit_up_names) <= 5:
+                lu_str = "、".join(limit_up_names)
+            else:
+                lu_str = "、".join(limit_up_names[:5]) + f"等{len(limit_up_names)}只"
+        else:
+            lu_str = "-"
+        print(f"     龙头: {leaders}    中军: {middles}    涨停股: {lu_str}")
 
     print(f"\n[⏱ 板块热度榜耗时 {time.perf_counter() - t0:.1f}s]")
 
