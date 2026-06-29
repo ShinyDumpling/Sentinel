@@ -614,14 +614,14 @@ def main():
     t0 = time.perf_counter()
 
     index_codes = [
-        ("000001.SH", "上证指数"),
-        ("399001.SZ", "深证成指"),
-        ("399006.SZ", "创业板指"),
-        ("000688.SH", "科创50"),
-        ("000300.SH", "沪深300"),
-        ("000852.SH", "中证1000"),
+        ("000001.SH", "上证指数", "沪市整体冷暖，被银行石油等大块头主导，比较迟钝"),
+        ("399001.SZ", "深证成指", "深市整体，科技制造股多，比上证活跃"),
+        ("399006.SZ", "创业板指", "成长股代表（新能源、医药、科技制造）"),
+        ("000688.SH", "科创50", "硬科技代表（半导体、AI、芯片），弹性最大"),
+        ("000300.SH", "沪深300", "大盘蓝筹，机构主战场，它强=资金抱团偏防御"),
+        ("000852.SH", "中证1000", "小盘股，题材股土壤，它强=游资活跃风险偏好高"),
     ]
-    codes = [c for c, _ in index_codes]
+    codes = [c for c, _, _ in index_codes]
 
     res = tq.get_market_data(
         field_list=["Close", "Amount"],
@@ -636,7 +636,9 @@ def main():
 
     asof = ""
     index_rows = []
-    for code, name in index_codes:
+    index_notes = {}  # code → 一句话解释
+    for code, name, note in index_codes:
+        index_notes[name] = note
         try:
             c = close[code].sort_index()
             a = amount[code].sort_index()
@@ -670,7 +672,8 @@ def main():
         chg5_str = f"{r['5日%']:.2f}" if r['5日%'] is not None else "-"
         chg20_str = f"{r['20日%']:.2f}" if r['20日%'] is not None else "-"
         vol_str = f"{r['量能比']:.2f}" if r['量能比'] is not None else "-"
-        print(f"{r['名称']:<12}{r['收盘']:>10.2f}{r['当日%']:>8.2f}{chg5_str:>8}{chg20_str:>8}{r['成交额亿']:>12.1f}{vol_str:>8}")
+        note = index_notes.get(r["名称"], "")
+        print(f"{r['名称']:<12}{r['收盘']:>10.2f}{r['当日%']:>8.2f}{chg5_str:>8}{chg20_str:>8}{r['成交额亿']:>12.1f}{vol_str:>8}  ← {note}")
 
     total_amt = sum(r["成交额亿"] for r in index_rows if r["成交额亿"])
     print(f"\n全市场总成交额: {total_amt:.1f} 亿")
