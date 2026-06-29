@@ -291,11 +291,20 @@ def analyze_key_block_members(key_blocks):
 
     for analysis in analyses:
         analysis["涨停股"] = [brief_stock_row(row, name_cache) for row in analysis.pop("_涨停候选")]
-        analysis["涨停股名"] = [name_cache.get(row["代码"], row["代码"]) for row in analysis.pop("_涨停候选_raw")]
+        analysis["涨停股名"] = [
+            f"{name_cache.get(row['代码'], row['代码'])}({row['代码'].replace('.SH','').replace('.SZ','').replace('.BJ','')})"
+            for row in analysis.pop("_涨停候选_raw")
+        ]
         analysis["龙头候选"] = [brief_stock_row(row, name_cache) for row in analysis.pop("_龙头候选")]
-        analysis["龙头候选名"] = [name_cache.get(row["代码"], row["代码"]) for row in analysis.pop("_龙头候选_raw")]
+        analysis["龙头候选名"] = [
+            f"{name_cache.get(row['代码'], row['代码'])}({row['代码'].replace('.SH','').replace('.SZ','').replace('.BJ','')})"
+            for row in analysis.pop("_龙头候选_raw")
+        ]
         analysis["中军候选"] = [brief_stock_row(row, name_cache) for row in analysis.pop("_中军候选")]
-        analysis["中军候选名"] = [name_cache.get(row["代码"], row["代码"]) for row in analysis.pop("_中军候选_raw")]
+        analysis["中军候选名"] = [
+            f"{name_cache.get(row['代码'], row['代码'])}({row['代码'].replace('.SH','').replace('.SZ','').replace('.BJ','')})"
+            for row in analysis.pop("_中军候选_raw")
+        ]
 
     return analyses
 
