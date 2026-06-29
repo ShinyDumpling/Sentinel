@@ -795,7 +795,7 @@ def main():
         for i, r in enumerate(rows_to_print, 1):
             chg20_str = f"{r['20日涨幅%']:.2f}" if r['20日涨幅%'] is not None else "-"
             net_str = f"{r['主力净流入亿']}" if r['主力净流入亿'] is not None else "-"
-            name_with_type = f"{r['名称']}({r['代码']}){r['类型']}"
+            name_with_type = f"{r['名称']}({r['代码']})"
             print(f"{i:<4}{name_with_type:<20}{r['当日涨幅%']:>8.2f}{chg20_str:>8}{net_str:>14}")
 
     print_block_rank(f">>> 🔥 行业板块热度榜 Top {TOP_N} (按当日涨幅排序)", industry_top)
