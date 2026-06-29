@@ -89,14 +89,13 @@ def sort_key_desc(value, default=-999999):
     return value if value is not None else default
 
 
-def pick_key_blocks(industry_top, industry_bottom, concept_top, concept_bottom):
+def pick_key_blocks(industry_top, concept_top):
+    """从涨幅榜中选取重点板块用于成分股验证。"""
     ordered = []
     seen = set()
     groups = [
         ("行业Top", industry_top[:KEY_BLOCKS_PER_BUCKET]),
-        ("行业Bottom", industry_bottom[:KEY_BLOCKS_PER_BUCKET]),
         ("概念Top", concept_top[:KEY_BLOCKS_PER_BUCKET]),
-        ("概念Bottom", concept_bottom[:KEY_BLOCKS_PER_BUCKET]),
     ]
     for source, rows in groups:
         for row in rows:
@@ -804,7 +803,7 @@ def main():
     print_block_rank(f">>> 📉 行业板块跌幅榜 Bottom {TOP_N} (按当日涨幅排序)", industry_bottom)
     print_block_rank(f">>> 📉 概念板块跌幅榜 Bottom {TOP_N} (按当日涨幅排序)", concept_bottom)
 
-    key_blocks = pick_key_blocks(industry_top, industry_bottom, concept_top, concept_bottom)
+    key_blocks = pick_key_blocks(industry_top, concept_top)
     print(f"\n重点板块成分股验证: 计划分析 {len(key_blocks)} 个板块...")
     key_block_analyses = analyze_key_block_members(key_blocks)
 
