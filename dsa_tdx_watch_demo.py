@@ -1112,6 +1112,15 @@ def _build_llm_prompt(
 """
 
 
+def _strip_markdown_json(text: str) -> str:
+    """Remove markdown code fences that some LLMs wrap around JSON output."""
+    text = text.strip()
+    if text.startswith("```"):
+        text = re.sub(r"^```(?:json)?\s*", "", text)
+        text = re.sub(r"\s*```$", "", text)
+    return text.strip()
+
+
 def _judge_with_llm(
     report_text: str,
     market_report_text: str,
@@ -1142,7 +1151,6 @@ def _judge_with_llm(
     response = client.chat.completions.create(
         model=model,
         temperature=0.1,
-        response_format={"type": "json_object"},
         messages=[
             {
                 "role": "system",
@@ -1157,6 +1165,7 @@ def _judge_with_llm(
     )
 
     content = response.choices[0].message.content or "{}"
+    content = _strip_markdown_json(content)
     parsed = json.loads(content)
     parsed["LLM模型"] = model
     return parsed
