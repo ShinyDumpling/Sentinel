@@ -27,7 +27,7 @@ from tqcenter import tq  # noqa: E402
 # ---------------------------------------------------------------------------
 # 默认参数
 # ---------------------------------------------------------------------------
-DEFAULT_DB = "data/all_daily_k.db"
+DEFAULT_DB = str(Path(__file__).resolve().parent / "all_daily_k.db")
 DEFAULT_DAYS = 150
 DEFAULT_BATCH_SIZE = 200
 
