@@ -31,9 +31,9 @@ TQCENTER_DIR = Path(
     r"D:\【指标100】通达信《专业研究版》773\【指标100】通达信《专业研究版》773\PYPlugins\user"
 )
 TQCENTER_FILE = TQCENTER_DIR / "tqcenter.py"
-DEFAULT_REPORT_PATH = Path(r"D:\股神养成plan\daily_stock_analysis\reports\report_20260626.md")
+DEFAULT_REPORT_PATH = Path(r"D:\股神养成plan\daily_stock_analysis\reports\report_20260629.md")
 
-DEFAULT_MARKET_REPORT_PATH = Path(r"D:\股神养成plan\daily_stock_analysis\reports\market_review_20260626.md")
+DEFAULT_MARKET_REPORT_PATH = Path(r"D:\股神养成plan\daily_stock_analysis\reports\market_review_20260629.md")
 
 CYQ_JS_CODE = r"""
 // @ts-nocheck
@@ -271,6 +271,13 @@ TODO_ITEMS = {
         "当前 demo 已补入最小持仓上下文，但仍是写死数据，后续需要改成从真实持仓源读取。",
         "持仓场景下，盯盘判断重点应从“能不能买”切到“持有、加仓、减仓、止盈、止损、风险提示”。",
         "后续可扩展动作枚举，例如 hold / add_position / trim_position / stop_loss / take_profit，以减少 watch_sell / risk_alert 语义过粗的问题。",
+    ],
+    "预期分析与监控执行拆分": [
+        "当股票数量变多时，当前脚本会为每只股票同时做分析和监控判断，输出结果容易过多、过乱，后续需要先整理清楚边界。",
+        "需要明确哪些内容属于盘前/策略层的‘预期分析’，哪些内容属于盘中/执行层的‘监控判断’，避免在监控脚本里混入过多重新分析。",
+        "后续建议把流程拆成两段：先生成精简、稳定的预期与观察点，再由监控脚本只围绕这些预期做触发检查、风险提示和状态更新。",
+        "这个脚本整体定位应是监控脚本，因此输出应优先服务‘是否触发、为什么触发、下一步看什么’，而不是对每只股票重复展开完整分析。",
+        "如果股票池较大，后续还需要设计结果分层与聚合方式，例如区分‘已触发 / 候选 / 继续观察 / 可忽略’，减少盯盘噪音。",
     ],
 }
 
