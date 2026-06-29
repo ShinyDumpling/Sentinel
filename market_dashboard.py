@@ -800,8 +800,8 @@ def main():
             print(f"{i:<4}{name_with_type:<20}{r['当日涨幅%']:>8.2f}{chg20_str:>8}{net_str:>14}")
 
     print_block_rank(f">>> 🔥 行业板块热度榜 Top {TOP_N} (按当日涨幅排序)", industry_top)
-    print_block_rank(f">>> 📉 行业板块跌幅榜 Bottom {TOP_N} (按当日涨幅排序)", industry_bottom)
     print_block_rank(f">>> 🚀 概念板块热度榜 Top {TOP_N} (按当日涨幅排序)", concept_top)
+    print_block_rank(f">>> 📉 行业板块跌幅榜 Bottom {TOP_N} (按当日涨幅排序)", industry_bottom)
     print_block_rank(f">>> 📉 概念板块跌幅榜 Bottom {TOP_N} (按当日涨幅排序)", concept_bottom)
 
     key_blocks = pick_key_blocks(industry_top, industry_bottom, concept_top, concept_bottom)
