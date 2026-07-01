@@ -663,19 +663,77 @@ def build_sector_intent_prompt(
     concept_bottom,
     key_block_analyses,
 ):
-    data_text = json.dumps(
-        {
-            "trade_date": asof,
-            "style_verdict": style_verdict,
-            "industry_top": industry_top,
-            "industry_bottom": industry_bottom,
-            "concept_top": concept_top,
-            "concept_bottom": concept_bottom,
-            "key_block_analyses": key_block_analyses,
-        },
-        ensure_ascii=False,
-        indent=2,
-    )
+    def _fmt(val, decimals=2):
+        if val is None or val != val:
+            return "-"
+        return f"{val:.{decimals}f}"
+
+    def _pure_code(code):
+        return code.replace(".SH", "").replace(".SZ", "").replace(".BJ", "")
+
+    lines = []
+    lines.append(f"交易日: {asof}")
+    if style_verdict:
+        lines.append(f"市场风格: {json.dumps(style_verdict, ensure_ascii=False)}")
+
+    header = f"{'排名':<4}{'板块':<20}{'当日%':>8}{'20日%':>8}{'60日%':>8}{'120日%':>8}{'主力净流入亿':>14}{'中期趋势':>12}"
+
+    def _append_rank_table(title, rows_to_print):
+        lines.append("")
+        lines.append(title)
+        lines.append("-" * 72)
+        lines.append(header)
+        lines.append("-" * 72)
+        for i, r in enumerate(rows_to_print, 1):
+            name_with_type = f"{r['名称']}({_pure_code(r['代码'])})"
+            trend_str = r.get("中期趋势") or "-"
+            lines.append(
+                f"{i:<4}{name_with_type:<20}"
+                f"{r['当日涨幅%']:>8.2f}"
+                f"{_fmt(r.get('20日涨幅%')):>8}"
+                f"{_fmt(r.get('60日涨幅%')):>8}"
+                f"{_fmt(r.get('120日涨幅%')):>8}"
+                f"{_fmt(r.get('主力净流入亿'), 1):>14}"
+                f"{trend_str:>12}"
+            )
+
+    _append_rank_table(f"行业板块热度榜 Top{len(industry_top)} (按当日涨幅排序)", industry_top)
+    _append_rank_table(f"概念板块热度榜 Top{len(concept_top)} (按当日涨幅排序)", concept_top)
+    _append_rank_table(f"行业板块跌幅榜 Bottom{len(industry_bottom)} (按当日涨幅排序)", industry_bottom)
+    _append_rank_table(f"概念板块跌幅榜 Bottom{len(concept_bottom)} (按当日涨幅排序)", concept_bottom)
+
+    if key_block_analyses:
+        lines.append("")
+        lines.append("重点板块成分股验证:")
+        for analysis in key_block_analyses:
+            chg = analysis["当日涨幅%"]
+            chg_str = f"{chg:+.2f}%" if chg is not None else "-"
+            total = analysis["成分股数"]
+            up = analysis["上涨家数"]
+            down = analysis["下跌家数"]
+            flat = analysis["平盘家数"]
+            limit_up = analysis["涨停家数"]
+            parts = [
+                f"🔥 {analysis['名称']}({_pure_code(analysis.get('代码',''))})",
+                chg_str,
+                f"成分股{total}只",
+                f"上涨{up}",
+                f"下跌{down}",
+                f"平盘{flat}",
+            ]
+            if limit_up > 0:
+                parts.append(f"涨停{limit_up}")
+            lines.append("  " + "  ".join(parts))
+            leaders = "、".join(analysis.get("龙头候选名", [])[:3]) or "-"
+            middles = "、".join(analysis.get("中军候选名", [])[:3]) or "-"
+            limit_up_names = analysis.get("涨停股名", [])
+            if limit_up_names:
+                lu_str = "、".join(limit_up_names[:5]) + (f"等{len(limit_up_names)}只" if len(limit_up_names) > 5 else "")
+            else:
+                lu_str = "-"
+            lines.append(f"     龙头: {leaders}    中军: {middles}    涨停股: {lu_str}")
+
+    data_text = "\n".join(lines)
 
     system_prompt = """
 你是一个A股方向预期分析助手。
