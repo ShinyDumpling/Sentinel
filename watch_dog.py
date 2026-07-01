@@ -31,9 +31,9 @@ TQCENTER_DIR = Path(
     r"D:\【指标100】通达信《专业研究版》773\【指标100】通达信《专业研究版》773\PYPlugins\user"
 )
 TQCENTER_FILE = TQCENTER_DIR / "tqcenter.py"
-DEFAULT_REPORT_PATH = Path(r"D:\股神养成plan\daily_stock_analysis\reports\report_20260629.md")
+DEFAULT_REPORT_PATH = Path(r"D:\股神养成plan\daily_stock_analysis\reports\report_20260701.md")
 
-DEFAULT_MARKET_REPORT_PATH = Path(r"D:\股神养成plan\daily_stock_analysis\reports\market_review_20260629.md")
+DEFAULT_MARKET_REPORT_PATH = Path(r"D:\股神养成plan\daily_stock_analysis\reports\market_review_20260701.md")
 
 CYQ_JS_CODE = r"""
 // @ts-nocheck
@@ -163,15 +163,6 @@ function createNumberArray(count) {
 """
 
 POSITION_CONTEXT: Dict[str, Dict[str, Any]] = {
-    "002668.SZ": {
-        "是否持仓": True,
-        "持仓数量": 200,
-        "持仓成本": 10.225,
-        "当前持仓市值": 10255,
-        "计划最大仓位": 0.4,
-        "当前仓位": 0.2,
-        "建仓阶段": "首仓",
-    }
 }
 
 RECENT_DAILY_COUNT = 120
