@@ -114,14 +114,17 @@ def brief_stock_row(row, name_cache):
     name = name_cache.get(code, code)
     chg = row.get("涨跌幅%")
     amt = row.get("成交额亿")
-    lianban = row.get("连板数")
+    volume_ratio = row.get("量比")
+    consecutive_boards = row.get("连板天数")
     parts = [name]
     if chg is not None:
         parts.append(f"{chg:+.2f}%")
     if amt is not None:
         parts.append(f"{amt:.1f}亿")
-    if lianban is not None and lianban >= 2:
-        parts.append(f"{int(round(lianban))}连板")
+    if volume_ratio is not None:
+        parts.append(f"量比{volume_ratio:.2f}")
+    if consecutive_boards is not None and consecutive_boards >= 2:
+        parts.append(f"{int(round(consecutive_boards))}连板")
     return " / ".join(parts)
 
 
@@ -202,7 +205,7 @@ def analyze_key_block_members(key_blocks):
 
     member_cache = {}
     for code in all_member_codes:
-        extra = tq.get_more_info(stock_code=code, field_list=["ZAF", "fLianB"])
+        extra = tq.get_more_info(stock_code=code, field_list=["ZAF", "fLianB", "EverZTCount"]) or {}
         amount_yi = None
         if amount_df is not None and code in amount_df.columns:
             try:
@@ -212,7 +215,8 @@ def analyze_key_block_members(key_blocks):
         member_cache[code] = {
             "代码": code,
             "涨跌幅%": safe_float(extra.get("ZAF")),
-            "连板数": safe_float(extra.get("fLianB")),
+            "量比": safe_float(extra.get("fLianB")),
+            "连板天数": safe_float(extra.get("EverZTCount")),
             "成交额亿": round(amount_yi, 2) if amount_yi is not None else None,
         }
 
@@ -225,7 +229,8 @@ def analyze_key_block_members(key_blocks):
             key=lambda row: (
                 sort_key_desc(row.get("涨跌幅%")),
                 sort_key_desc(row.get("成交额亿"), 0),
-                sort_key_desc(row.get("连板数"), 0),
+                sort_key_desc(row.get("连板天数"), 0),
+                sort_key_desc(row.get("量比"), 0),
             ),
             reverse=True,
         )
@@ -234,7 +239,8 @@ def analyze_key_block_members(key_blocks):
             key=lambda row: (
                 sort_key_desc(row.get("成交额亿"), 0),
                 sort_key_desc(row.get("涨跌幅%")),
-                sort_key_desc(row.get("连板数"), 0),
+                sort_key_desc(row.get("连板天数"), 0),
+                sort_key_desc(row.get("量比"), 0),
             ),
             reverse=True,
         )
@@ -286,7 +292,7 @@ def analyze_key_block_members(key_blocks):
 
     name_cache = {}
     for code in dict.fromkeys(display_codes):
-        info = tq.get_stock_info(code, field_list=["Name"])
+        info = tq.get_stock_info(code, field_list=["Name"]) or {}
         name_cache[code] = info.get("Name", code)
 
     for analysis in analyses:
@@ -481,121 +487,113 @@ def judge_sector_intent_with_llm(
     concept_bottom,
     key_block_analyses,
 ):
-    """根据行业/概念板块榜与指数背景，判断市场资金意图。"""
+    """Use post-market data to infer next-session sector direction expectations."""
     s = _get_llm_settings()
     if not s["api_key"] or not s["model"] or not s["base_url"]:
-        return {"状态": "未执行", "原因": "缺少 LLM 配置，已跳过资金意图判断。(设置 ARK_API_KEY / ARK_MODEL / ARK_BASE_URL 环境变量即可)"}
+        return {
+            "status": "skipped",
+            "reason": "Missing LLM settings: set ARK_API_KEY / ARK_MODEL / ARK_BASE_URL",
+        }
 
     try:
         from openai import OpenAI
     except ImportError:
-        return {"状态": "未执行", "原因": "未安装 openai 库 (pip install openai)。"}
+        return {
+            "status": "skipped",
+            "reason": "openai package is not installed (pip install openai)",
+        }
 
-    data_text = json.dumps({
-        "数据截止交易日": asof,
-        "指数风格背景": style_verdict,
-        "行业板块Top榜": industry_top,
-        "行业板块Bottom榜": industry_bottom,
-        "概念板块Top榜": concept_top,
-        "概念板块Bottom榜": concept_bottom,
-        "重点板块成分股验证": key_block_analyses,
-    }, ensure_ascii=False, indent=2)
+    data_text = json.dumps(
+        {
+            "trade_date": asof,
+            "style_verdict": style_verdict,
+            "industry_top": industry_top,
+            "industry_bottom": industry_bottom,
+            "concept_top": concept_top,
+            "concept_bottom": concept_bottom,
+            "key_block_analyses": key_block_analyses,
+        },
+        ensure_ascii=False,
+        indent=2,
+    )
 
-    prompt = f"""你是一个A股盘面资金意图分析助手。
+    system_prompt = """
+You are an A-share sector-direction expectation assistant.
+Your job is to use post-market structured data to infer next-trading-day direction expectations.
 
-你的任务不是点评市场涨跌，不是分析个股，不是给交易建议，
-而是根据今天的行业板块和概念板块表现，判断市场资金意图偏什么。
+Rules:
+- Focus on direction expectations, not stock recommendations.
+- Do not invent news, policy, or outside information not present in the input.
+- Do not output markdown.
+- Output JSON only.
+- Keep language concrete and trading-oriented.
+- Distinguish between strong continuation, observation, divergence, and avoidance.
+""".strip()
 
-你会看到四类数据：
-1. 行业板块Top榜
-2. 行业板块Bottom榜
-3. 概念板块Top榜
-4. 概念板块Bottom榜
+    prompt = f"""
+Please generate a next-trading-day direction expectation from today's post-market data.
 
-每个板块包含：
-- 名称
-- 当日涨幅%
-- 20日涨幅%
-- 成交额亿
-- 主力净流入亿
+Context:
+- This is a post-market task.
+- The goal is to support next-day pre-market preparation.
+- The output should help the user decide which directions deserve focus tomorrow, which ones should only be watched, and which ones should be avoided.
 
-你还会看到部分重点板块的成分股验证结果，包括：
-- 成分股上涨/下跌/平盘家数
-- 涨停家数、跌停家数
-- 板块状态判断（真上涨、疑似虚涨、分化上涨、真下跌、分化下跌等）
-- 涨停股、龙头候选、中军候选（这些只是板块内部结构证据，不是让你点评个股）
+How to judge:
+1. Use style_verdict as the market background, but do not let it override sector evidence.
+2. Industry sectors are closer to allocation direction and medium-strength capital preference.
+3. Concept sectors are closer to short-term theme activity and sentiment.
+4. If both industry and concept evidence point to the same direction, you may mark it stronger.
+5. If a sector rises but breadth, limit-up count, or leader/mid-cap structure is weak, treat it cautiously.
+6. If multiple signals conflict, explicitly write the contradiction instead of hiding it behind vague wording.
 
-你还会看到宽基指数风格判断结果，作为辅助背景。
-
-请重点分析：
-- 资金更偏向防守型方向，还是进攻型方向
-- 是高股息/权重/稳定类方向更强，还是科技成长/高弹性方向更强
-- 板块上涨是否伴随成交活跃和主力净流入
-- 板块下跌是否显示出资金在主动回避某些方向
-- 是单一方向占优，还是多方向混合轮动
-- 板块上涨是否得到成分股广度、涨停数量、龙头/中军配合，还是只有少数个股在拉抬
-- 板块下跌是整体被抛弃，还是指数权重回落但板块内部并未全面走弱
-
-请同时参考上涨板块和下跌板块：
-- 上涨榜代表资金短线偏好的方向
-- 下跌榜代表资金回避、流出或放弃的方向
-- 判断市场资金意图时，不能只看强势方向，也要看被抛弃的方向
-
-请区分行业板块和概念板块的含义：
-- 行业板块更接近产业与配置层，适合判断大资金偏向、防守或权重风格是否占优
-- 概念板块更接近主题与情绪层，适合判断短线风险偏好、题材进攻意愿是否占优
-
-判断市场资金意图时：
-- 如果行业板块走强主要集中在银行、电力、煤炭、公用事业、保险等稳健方向，而概念板块并不强，通常更偏防守
-- 如果概念板块走强主要集中在科技成长、高弹性主题，而行业板块也有相应成长行业配合，通常更偏进攻
-- 如果行业板块偏防守，但概念板块偏进攻，应判断为“防守中有进攻”或存在明显矛盾
-- 如果概念板块很强，但行业板块没有配合，需警惕这只是局部题材活跃，而不是全市场一致进攻
-
-注意：
-- 不要分析个股
-- 不要补充输入中没有提供的消息面、政策面信息
-- 不要直接给买卖建议
-- 你的任务只是推断“市场资金意图”
-- 可以引用成分股内部结构作为证据，但不要把输出写成个股点评
-
-如果板块信号互相矛盾，不要只给出“混合轮动”或“无明显方向”这种笼统结论。
-你必须明确指出矛盾点来自哪里，例如：
-- 防守型板块走强，但高弹性成长板块也同时活跃
-- 板块涨幅强，但主力净流入不支持
-- 行业板块偏防守，而概念板块偏进攻
-- 上涨榜偏进攻，但跌幅榜里也出现大量高弹性成长方向
-
-在这种情况下，请把矛盾写进“矛盾点”字段，让用户自行判断更应重视哪类信号。
-
-请输出如下 JSON：
+Output this JSON schema exactly:
 {{
-  "市场资金意图": "偏防守/偏进攻/防守中有进攻/进攻中有防守/混合轮动/无明显方向",
-  "意图强度": "强/中/弱",
-  "行业层判断": "一句话说明行业板块体现的资金偏好",
-  "概念层判断": "一句话说明概念板块体现的情绪和风险偏好",
-  "是否存在明显矛盾": "是/否",
-  "矛盾点": [
-    "一句话指出矛盾1",
-    "一句话指出矛盾2"
+  "task_type": "postmarket_next_day_direction_plan",
+  "market_overview": {{
+    "capital_style": "one short sentence",
+    "summary": "one short sentence"
+  }},
+  "focus_directions": [
+    {{
+      "direction": "sector or theme name",
+      "status": "main_attack|watch|divergence",
+      "reason": "why this direction deserves this status",
+      "watch_points": [
+        "next-day confirmation point 1",
+        "next-day confirmation point 2"
+      ]
+    }}
   ],
-  "判断依据": [
-    "一句话说明行业依据",
-    "一句话说明概念依据",
-    "一句话说明涨跌榜和主力净流入依据"
+  "avoid_directions": [
+    {{
+      "direction": "sector or theme name",
+      "reason": "why this direction should be avoided or downgraded"
+    }}
   ],
-  "一句话结论": "一句大白话总结今天资金想干什么，30字以内"
+  "contradictions": {{
+    "has_conflict": true,
+    "items": [
+      "specific contradiction 1",
+      "specific contradiction 2"
+    ]
+  }},
+  "next_day_watchlist": [
+    "direction-level watch item 1",
+    "direction-level watch item 2",
+    "direction-level watch item 3"
+  ]
 }}
 
-【原始数据】
+Raw input:
 {data_text}
-"""
+""".strip()
 
     client = OpenAI(api_key=s["api_key"], base_url=s["base_url"])
     resp = client.chat.completions.create(
         model=s["model"],
         temperature=0.1,
         messages=[
-            {"role": "system", "content": "你是一个克制、直接、只根据指数和板块数据判断A股资金意图的分析助手。你只输出 JSON，不要输出任何其他文字、解释或 markdown 标记。"},
+            {"role": "system", "content": system_prompt},
             {"role": "user", "content": prompt},
         ],
         timeout=120,
@@ -604,8 +602,8 @@ def judge_sector_intent_with_llm(
     try:
         parsed = json.loads(content)
     except json.JSONDecodeError:
-        return {"状态": "解析失败", "原始返回": content}
-    parsed["_模型"] = s["model"]
+        return {"status": "parse_failed", "raw_response": content}
+    parsed["_model"] = s["model"]
     return parsed
 
 
