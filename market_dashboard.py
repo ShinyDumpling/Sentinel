@@ -23,7 +23,7 @@ if hasattr(sys.stdout, "reconfigure"):
 if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
-N = 21  # 拉最近21根日K，够算20日涨幅（c[-1] vs c[-21]）
+N = 120  # 拉最近120根日K，供20/60/120日涨幅和中期趋势判断使用
 TOP_N = 15  # 每个榜单取前15名
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -50,6 +50,128 @@ def pct(a, b):
         return (float(a) / float(b) - 1) * 100
     except (ZeroDivisionError, TypeError, ValueError):
         return float("nan")
+
+
+def rolling_mean(values, window):
+    if len(values) < window or window <= 0:
+        return None
+    subset = values.iloc[-window:]
+    if len(subset) < window:
+        return None
+    return float(subset.mean())
+
+
+def classify_slope(current, previous, eps=0.3):
+    if current is None or previous is None:
+        return None
+    delta = current - previous
+    if delta > eps:
+        return "向上"
+    if delta < -eps:
+        return "向下"
+    return "走平"
+
+
+def max_drawdown_pct(series):
+    if len(series) < 2:
+        return None
+    running_high = series.cummax()
+    drawdowns = series / running_high - 1
+    return float(drawdowns.min()) * 100
+
+
+def summarize_block_trend(close_series, amount_series):
+    values = close_series.astype(float).dropna().tail(N)
+    amount_values = amount_series.astype(float).dropna().tail(N)
+    if len(values) < 2 or len(amount_values) < 1:
+        return {
+            "5日涨幅%": None,
+            "20日涨幅%": None,
+            "60日涨幅%": None,
+            "120日涨幅%": None,
+            "MA20": None,
+            "MA60": None,
+            "MA120": None,
+            "收盘站上MA20": None,
+            "收盘站上MA60": None,
+            "MA20方向": None,
+            "MA60方向": None,
+            "距120日新高回撤%": None,
+            "近20日最大回撤%": None,
+            "近10日活跃天数": None,
+            "近20日放量天数": None,
+            "中期趋势": "数据不足",
+            "阶段判断": "数据不足",
+        }
+    last = float(values.iloc[-1])
+    ma20 = rolling_mean(values, 20)
+    ma60 = rolling_mean(values, 60)
+    ma120 = rolling_mean(values, 120)
+    prev_ma20 = rolling_mean(values.iloc[:-5], 20) if len(values) >= 25 else None
+    prev_ma60 = rolling_mean(values.iloc[:-5], 60) if len(values) >= 65 else None
+    slope20 = classify_slope(ma20, prev_ma20)
+    slope60 = classify_slope(ma60, prev_ma60)
+    change5 = pct(values.iloc[-1], values.iloc[-6]) if len(values) >= 6 else float("nan")
+    change20 = pct(values.iloc[-1], values.iloc[-21]) if len(values) >= 21 else float("nan")
+    change60 = pct(values.iloc[-1], values.iloc[-61]) if len(values) >= 61 else float("nan")
+    change120 = pct(values.iloc[-1], values.iloc[0]) if len(values) >= 120 else float("nan")
+    high120 = float(values.max()) if len(values) >= 1 else None
+    drawdown_from_high = pct(last, high120) if high120 else float("nan")
+    drawdown20 = max_drawdown_pct(values.tail(20)) if len(values) >= 20 else None
+    avg_amt20 = rolling_mean(amount_values, 20)
+    active_days10 = int((values.pct_change().tail(10) > 0.02).sum()) if len(values) >= 10 else None
+    strong_amt_days20 = (
+        int((amount_values.tail(20) > avg_amt20 * 1.2).sum()) if avg_amt20 and len(amount_values) >= 20 else None
+    )
+
+    if (
+        ma20 is not None and ma60 is not None
+        and last >= ma20 >= ma60
+        and slope20 == "向上"
+        and slope60 in ("向上", "走平")
+    ):
+        trend_stage = "中期上升"
+    elif ma20 is not None and ma60 is not None and last >= ma20 and slope20 == "向上":
+        trend_stage = "上升回流"
+    elif ma20 is not None and ma60 is not None and last >= ma20 and last < ma60:
+        trend_stage = "反抽修复"
+    elif ma20 is not None and ma60 is not None and last < ma20 and last >= ma60:
+        trend_stage = "高位整理"
+    else:
+        trend_stage = "偏弱震荡"
+
+    if (
+        change60 == change60 and change120 == change120
+        and change60 >= 15 and change120 >= 20
+        and drawdown_from_high == drawdown_from_high and drawdown_from_high >= -12
+    ):
+        mid_term_trend = "主线候选"
+    elif change60 == change60 and change60 >= 8 and slope20 == "向上":
+        mid_term_trend = "趋势活跃"
+    elif change20 == change20 and change20 > 0:
+        mid_term_trend = "短线活跃"
+    else:
+        mid_term_trend = "趋势一般"
+
+    return {
+        "5日涨幅%": round(change5, 2) if change5 == change5 else None,
+        "20日涨幅%": round(change20, 2) if change20 == change20 else None,
+        "60日涨幅%": round(change60, 2) if change60 == change60 else None,
+        "120日涨幅%": round(change120, 2) if change120 == change120 else None,
+        "MA20": round(ma20, 2) if ma20 is not None else None,
+        "MA60": round(ma60, 2) if ma60 is not None else None,
+        "MA120": round(ma120, 2) if ma120 is not None else None,
+        "收盘站上MA20": ma20 is not None and last >= ma20,
+        "收盘站上MA60": ma60 is not None and last >= ma60,
+        "MA20方向": slope20,
+        "MA60方向": slope60,
+        "距120日新高回撤%": round(drawdown_from_high, 2) if drawdown_from_high == drawdown_from_high else None,
+        "近20日最大回撤%": round(drawdown20, 2) if drawdown20 is not None else None,
+        "近10日活跃天数": active_days10,
+        "近20日放量天数": strong_amt_days20,
+        "中期趋势": mid_term_trend,
+        "阶段判断": trend_stage,
+    }
 
 
 def load_block_type_map():
@@ -503,90 +625,15 @@ def judge_sector_intent_with_llm(
             "reason": "openai package is not installed (pip install openai)",
         }
 
-    data_text = json.dumps(
-        {
-            "trade_date": asof,
-            "style_verdict": style_verdict,
-            "industry_top": industry_top,
-            "industry_bottom": industry_bottom,
-            "concept_top": concept_top,
-            "concept_bottom": concept_bottom,
-            "key_block_analyses": key_block_analyses,
-        },
-        ensure_ascii=False,
-        indent=2,
+    system_prompt, prompt = build_sector_intent_prompt(
+        asof,
+        style_verdict,
+        industry_top,
+        industry_bottom,
+        concept_top,
+        concept_bottom,
+        key_block_analyses,
     )
-
-    system_prompt = """
-You are an A-share sector-direction expectation assistant.
-Your job is to use post-market structured data to infer next-trading-day direction expectations.
-
-Rules:
-- Focus on direction expectations, not stock recommendations.
-- Do not invent news, policy, or outside information not present in the input.
-- Do not output markdown.
-- Output JSON only.
-- Keep language concrete and trading-oriented.
-- Distinguish between strong continuation, observation, divergence, and avoidance.
-""".strip()
-
-    prompt = f"""
-Please generate a next-trading-day direction expectation from today's post-market data.
-
-Context:
-- This is a post-market task.
-- The goal is to support next-day pre-market preparation.
-- The output should help the user decide which directions deserve focus tomorrow, which ones should only be watched, and which ones should be avoided.
-
-How to judge:
-1. Use style_verdict as the market background, but do not let it override sector evidence.
-2. Industry sectors are closer to allocation direction and medium-strength capital preference.
-3. Concept sectors are closer to short-term theme activity and sentiment.
-4. If both industry and concept evidence point to the same direction, you may mark it stronger.
-5. If a sector rises but breadth, limit-up count, or leader/mid-cap structure is weak, treat it cautiously.
-6. If multiple signals conflict, explicitly write the contradiction instead of hiding it behind vague wording.
-
-Output this JSON schema exactly:
-{{
-  "task_type": "postmarket_next_day_direction_plan",
-  "market_overview": {{
-    "capital_style": "one short sentence",
-    "summary": "one short sentence"
-  }},
-  "focus_directions": [
-    {{
-      "direction": "sector or theme name",
-      "status": "main_attack|watch|divergence",
-      "reason": "why this direction deserves this status",
-      "watch_points": [
-        "next-day confirmation point 1",
-        "next-day confirmation point 2"
-      ]
-    }}
-  ],
-  "avoid_directions": [
-    {{
-      "direction": "sector or theme name",
-      "reason": "why this direction should be avoided or downgraded"
-    }}
-  ],
-  "contradictions": {{
-    "has_conflict": true,
-    "items": [
-      "specific contradiction 1",
-      "specific contradiction 2"
-    ]
-  }},
-  "next_day_watchlist": [
-    "direction-level watch item 1",
-    "direction-level watch item 2",
-    "direction-level watch item 3"
-  ]
-}}
-
-Raw input:
-{data_text}
-""".strip()
 
     client = OpenAI(api_key=s["api_key"], base_url=s["base_url"])
     resp = client.chat.completions.create(
@@ -605,6 +652,120 @@ Raw input:
         return {"status": "parse_failed", "raw_response": content}
     parsed["_model"] = s["model"]
     return parsed
+
+
+def build_sector_intent_prompt(
+    asof,
+    style_verdict,
+    industry_top,
+    industry_bottom,
+    concept_top,
+    concept_bottom,
+    key_block_analyses,
+):
+    data_text = json.dumps(
+        {
+            "trade_date": asof,
+            "style_verdict": style_verdict,
+            "industry_top": industry_top,
+            "industry_bottom": industry_bottom,
+            "concept_top": concept_top,
+            "concept_bottom": concept_bottom,
+            "key_block_analyses": key_block_analyses,
+        },
+        ensure_ascii=False,
+        indent=2,
+    )
+
+    system_prompt = """
+你是一个A股方向预期分析助手。
+你的任务是基于盘后结构化数据，生成次日盘前可用的方向预案。
+
+规则：
+- 重点是方向预期，不是个股推荐。
+- 不要编造输入中没有出现的消息、政策或外部信息。
+- 不要输出 markdown。
+- 只输出 JSON。
+- 语言要具体、克制、偏交易视角。
+- 要区分中期主线与短期轮动强点。
+- 要区分延续、观察、分歧、回避几种状态。
+""".strip()
+
+    prompt = f"""
+请基于今天的盘后数据，生成一个“次日方向预期预案”。
+
+任务背景：
+- 当前是盘后场景。
+- 目标是支持次日盘前准备。
+- 输出应帮助用户判断：明天哪些方向优先看，哪些方向只观察，哪些方向需要回避。
+
+判断原则：
+1. 可以参考 style_verdict 作为市场背景，但不能让它覆盖板块本身证据。
+2. 行业板块更接近配置层和中期资金偏好。
+3. 概念板块更接近短线主题活跃和情绪层。
+4. 要结合 20日/60日/120日涨幅、MA20/MA60 方向、距120日高点回撤、中期趋势标签，区分“中期主线”与“单日脉冲”。
+5. 如果行业和概念同时指向同一个方向，可以适当提高强度判断。
+6. 如果板块今天上涨，但成分股广度、涨停数、龙头/中军结构配合较弱，要谨慎处理。
+7. 如果某个方向今天很强，但中期趋势偏弱，应更倾向归类为“轮动尝试”或“短期脉冲”，而不是直接定义为新主线。
+8. 如果多个信号冲突，不要模糊带过，必须明确写出矛盾点。
+
+请严格输出如下 JSON 结构：
+{{
+  "task_type": "postmarket_next_day_direction_plan",
+  "market_overview": {{
+    "capital_style": "一句话说明资金风格背景",
+    "structure": "old_mainline_rotation|mainline_switch_attempt|mixed_rotation",
+    "summary": "一句话总结整体结构"
+  }},
+  "mid_term_mainlines": [
+    {{
+      "direction": "方向名称",
+      "status": "mainline_intact|mainline_shaky|mainline_weakening",
+      "reason": "为什么它仍然是主线，或为什么开始动摇"
+    }}
+  ],
+  "today_rotation_leaders": [
+    {{
+      "direction": "方向名称",
+      "nature": "rotation|mainline_extension|possible_new_mainline",
+      "reason": "为什么它今天走强，以及这意味着什么"
+    }}
+  ],
+  "next_day_focus_directions": [
+    {{
+      "direction": "方向名称",
+      "status": "main_attack|watch|divergence",
+      "reason": "为什么这个方向明天值得重点看",
+      "watch_points": [
+        "次日确认点1",
+        "次日确认点2"
+      ]
+    }}
+  ],
+  "avoid_directions": [
+    {{
+      "direction": "方向名称",
+      "reason": "为什么这个方向应回避或降级"
+    }}
+  ],
+  "contradictions": {{
+    "has_conflict": true,
+    "items": [
+      "具体矛盾点1",
+      "具体矛盾点2"
+    ]
+  }},
+  "next_day_watchlist": [
+    "次日需要优先验证的方向级观察项1",
+    "次日需要优先验证的方向级观察项2",
+    "次日需要优先验证的方向级观察项3"
+  ]
+}}
+
+原始输入数据：
+{data_text}
+""".strip()
+    return system_prompt, prompt
 
 
 def main():
@@ -738,23 +899,24 @@ def main():
 
             last = float(c.iloc[-1])
             chg1 = pct(c.iloc[-1], c.iloc[-2])
-            chg20 = pct(c.iloc[-1], c.iloc[-21]) if len(c) >= 21 else float("nan")
             amt_yi = float(a.iloc[-1]) / 10000
+            trend_summary = summarize_block_trend(c, a)
 
             block_type = get_block_type(code, block_type_map)
             if block_type == "unknown":
                 unknown_type_codes.append(code)
 
-            rows.append({
+            row = {
                 "代码": code,
                 "名称": code_to_name.get(code, code),
                 "类型代码": block_type,
                 "类型": get_block_type_display(code, block_type_map),
                 "当日涨幅%": round(chg1, 2),
-                "20日涨幅%": round(chg20, 2) if chg20 == chg20 else None,
                 "成交额亿": round(amt_yi, 1),
                 "主力净流入亿": None,  # 先占位，排序后再补
-            })
+            }
+            row.update(trend_summary)
+            rows.append(row)
         except Exception as e:
             fail += 1
             continue
@@ -796,7 +958,7 @@ def main():
         zjl = fund_map.get(r["代码"])
         r["主力净流入亿"] = round(zjl, 2) if zjl == zjl else None
 
-    header = f"{'排名':<4}{'板块':<20}{'当日%':>8}{'20日%':>8}{'主力净流入亿':>14}"
+    header = f"{'排名':<4}{'板块':<20}{'当日%':>8}{'20日%':>8}{'60日%':>8}{'120日%':>8}{'主力净流入亿':>14}{'中期趋势':>12}"
 
     def print_block_rank(title, rows_to_print):
         print("\n" + "=" * 72)
@@ -807,10 +969,13 @@ def main():
         print("-" * 72)
         for i, r in enumerate(rows_to_print, 1):
             chg20_str = f"{r['20日涨幅%']:.2f}" if r['20日涨幅%'] is not None else "-"
+            chg60_str = f"{r['60日涨幅%']:.2f}" if r['60日涨幅%'] is not None else "-"
+            chg120_str = f"{r['120日涨幅%']:.2f}" if r['120日涨幅%'] is not None else "-"
             net_str = f"{r['主力净流入亿']}" if r['主力净流入亿'] is not None else "-"
             pure_code = r["代码"].replace(".SH", "").replace(".SZ", "").replace(".BJ", "")
             name_with_type = f"{r['名称']}({pure_code})"
-            print(f"{i:<4}{name_with_type:<20}{r['当日涨幅%']:>8.2f}{chg20_str:>8}{net_str:>14}")
+            trend_str = r.get("中期趋势") or "-"
+            print(f"{i:<4}{name_with_type:<20}{r['当日涨幅%']:>8.2f}{chg20_str:>8}{chg60_str:>8}{chg120_str:>8}{net_str:>14}{trend_str:>12}")
 
     print_block_rank(f">>> 🔥 行业板块热度榜 Top {TOP_N} (按当日涨幅排序)", industry_top)
     print_block_rank(f">>> 🚀 概念板块热度榜 Top {TOP_N} (按当日涨幅排序)", concept_top)
