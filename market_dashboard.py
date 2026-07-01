@@ -1067,6 +1067,24 @@ def main():
     else:
         print("\n(已用 --no-llm 跳过 LLM 风格判断)")
 
+        # 打印构建好的全量 prompt（不实际调用 LLM）
+        system_prompt, prompt = build_sector_intent_prompt(
+            asof,
+            {},
+            industry_top,
+            industry_bottom,
+            concept_top,
+            concept_bottom,
+            key_block_analyses,
+        )
+        print("\n" + "=" * 72)
+        print(">>> 📋 板块方向预案 Prompt（未调用 LLM）")
+        print("=" * 72)
+        print("\n--- SYSTEM ---")
+        print(system_prompt)
+        print("\n--- USER ---")
+        print(prompt)
+
     print("\n" + "=" * 72)
     print(f">>> 完成 [总耗时 {time.perf_counter() - t0_total:.1f}s]")
     print("=" * 72)
