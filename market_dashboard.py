@@ -645,13 +645,8 @@ def judge_sector_intent_with_llm(
         ],
         timeout=120,
     )
-    content = resp.choices[0].message.content or "{}"
-    try:
-        parsed = json.loads(content)
-    except json.JSONDecodeError:
-        return {"status": "parse_failed", "raw_response": content}
-    parsed["_model"] = s["model"]
-    return parsed
+    content = resp.choices[0].message.content or ""
+    return {"_model": s["model"], "content": content}
 
 
 def build_sector_intent_prompt(
@@ -743,7 +738,6 @@ def build_sector_intent_prompt(
 - 重点是方向预期，不是个股推荐。
 - 不要编造输入中没有出现的消息、政策或外部信息。
 - 不要输出 markdown。
-- 只输出 JSON。
 - 语言要具体、克制、偏交易视角。
 - 要区分中期主线与短期轮动强点。
 - 要区分延续、观察、分歧、回避几种状态。
@@ -767,58 +761,32 @@ def build_sector_intent_prompt(
 7. 如果某个方向今天很强，但中期趋势偏弱，应更倾向归类为“轮动尝试”或“短期脉冲”，而不是直接定义为新主线。
 8. 如果多个信号冲突，不要模糊带过，必须明确写出矛盾点。
 
-请严格输出如下 JSON 结构：
-{{
-  "task_type": "postmarket_next_day_direction_plan",
-  "market_overview": {{
-    "capital_style": "一句话说明资金风格背景",
-    "structure": "old_mainline_rotation|mainline_switch_attempt|mixed_rotation",
-    "summary": "一句话总结整体结构"
-  }},
-  "mid_term_mainlines": [
-    {{
-      "direction": "方向名称",
-      "status": "mainline_intact|mainline_shaky|mainline_weakening",
-      "reason": "为什么它仍然是主线，或为什么开始动摇"
-    }}
-  ],
-  "today_rotation_leaders": [
-    {{
-      "direction": "方向名称",
-      "nature": "rotation|mainline_extension|possible_new_mainline",
-      "reason": "为什么它今天走强，以及这意味着什么"
-    }}
-  ],
-  "next_day_focus_directions": [
-    {{
-      "direction": "方向名称",
-      "status": "main_attack|watch|divergence",
-      "reason": "为什么这个方向明天值得重点看",
-      "watch_points": [
-        "次日确认点1",
-        "次日确认点2"
-      ]
-    }}
-  ],
-  "avoid_directions": [
-    {{
-      "direction": "方向名称",
-      "reason": "为什么这个方向应回避或降级"
-    }}
-  ],
-  "contradictions": {{
-    "has_conflict": true,
-    "items": [
-      "具体矛盾点1",
-      "具体矛盾点2"
-    ]
-  }},
-  "next_day_watchlist": [
-    "次日需要优先验证的方向级观察项1",
-    "次日需要优先验证的方向级观察项2",
-    "次日需要优先验证的方向级观察项3"
-  ]
-}}
+请按以下结构用自然语言输出，分块即可，不要用 JSON 包裹：
+
+## 市场全局
+- 资金风格背景：...
+- 整体结构（老主线轮动 / 主线切换尝试 / 混合轮动）：...
+- 一句话总结：...
+
+## 中期主线
+（列出所有可识别的主线，每条包含：方向名称、状态（完整/动摇/走弱）、理由）
+
+## 今日轮动强点
+（列出今日走强的方向，每条包含：方向名称、性质（轮动/主线延伸/可能新主线）、理由）
+
+## 次日重点方向
+（列出明天值得关注的方向，每条包含：方向名称、状态（主攻/观察/分歧）、理由、次日确认点）
+
+## 回避方向
+（列出应回避或降级的方向，每条包含：方向名称、理由）
+
+## 矛盾点
+（有冲突必须写明具体矛盾，没有则写"无"）
+
+## 次日观察清单
+1. ...
+2. ...
+3. ...
 
 原始输入数据：
 {data_text}
@@ -1117,10 +1085,12 @@ def main():
             concept_bottom,
             key_block_analyses,
         )
-        if intent_verdict.get("状态"):
-            print(f"[{intent_verdict.get('状态')}] {intent_verdict.get('原因') or intent_verdict.get('原始返回','')}")
+        if intent_verdict.get("content"):
+            print(intent_verdict["content"])
+        elif intent_verdict.get("status"):
+            print(f"[{intent_verdict.get('status')}] {intent_verdict.get('reason') or intent_verdict.get('raw_response','')}")
         else:
-            print(json.dumps(intent_verdict, ensure_ascii=False, indent=2))
+            print("(LLM 返回为空)")
         print(f"[⏱ LLM资金意图判断耗时 {time.perf_counter() - t0:.1f}s]")
     else:
         print("\n(已用 --no-llm 跳过 LLM 风格判断)")
