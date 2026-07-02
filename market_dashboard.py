@@ -437,6 +437,43 @@ def analyze_key_block_members(key_blocks):
     return analyses
 
 
+def build_top_block_kline_payload(top_rows, open_df, high_df, low_df, close_df, amount_df):
+    payload = []
+    for row in top_rows:
+        code = row["代码"]
+        pure_code = code.replace(".SH", "").replace(".SZ", "").replace(".BJ", "")
+        try:
+            o = open_df[code].sort_index()
+            h = high_df[code].sort_index()
+            l = low_df[code].sort_index()
+            c = close_df[code].sort_index()
+            a = amount_df[code].sort_index()
+        except Exception:
+            continue
+
+        kline_120d = []
+        for idx in c.index:
+            try:
+                kline_120d.append({
+                    "date": str(idx)[:10],
+                    "open": round(float(o.loc[idx]), 2),
+                    "high": round(float(h.loc[idx]), 2),
+                    "low": round(float(l.loc[idx]), 2),
+                    "close": round(float(c.loc[idx]), 2),
+                    "amount_yi": round(float(a.loc[idx]) / 10000, 2),
+                })
+            except Exception:
+                continue
+
+        payload.append({
+            "name": f"{row['名称']}({pure_code})",
+            "code": pure_code,
+            "type": row["类型代码"],
+            "kline_120d": kline_120d,
+        })
+    return payload
+
+
 def _get_llm_settings():
     """从环境变量读 LLM 配置（ARK_API_KEY / ARK_MODEL / ARK_BASE_URL）"""
     api_key = os.getenv("ARK_API_KEY") or os.getenv("OPENAI_API_KEY")
@@ -608,6 +645,7 @@ def judge_sector_intent_with_llm(
     concept_top,
     concept_bottom,
     key_block_analyses,
+    top_block_kline_120d,
 ):
     """Use post-market data to infer next-session sector direction expectations."""
     s = _get_llm_settings()
@@ -633,6 +671,7 @@ def judge_sector_intent_with_llm(
         concept_top,
         concept_bottom,
         key_block_analyses,
+        top_block_kline_120d,
     )
 
     client = OpenAI(api_key=s["api_key"], base_url=s["base_url"])
@@ -657,6 +696,7 @@ def build_sector_intent_prompt(
     concept_top,
     concept_bottom,
     key_block_analyses,
+    top_block_kline_120d,
 ):
     def _fmt(val, decimals=2):
         if val is None or val != val:
@@ -728,6 +768,11 @@ def build_sector_intent_prompt(
                 lu_str = "-"
             lines.append(f"     龙头: {leaders}    中军: {middles}    涨停股: {lu_str}")
 
+    if top_block_kline_120d:
+        lines.append("")
+        lines.append("行业Top+概念Top板块120日K线(JSON):")
+        lines.append(json.dumps(top_block_kline_120d, ensure_ascii=False))
+
     data_text = "\n".join(lines)
 
     system_prompt = """
@@ -765,6 +810,7 @@ def build_sector_intent_prompt(
 6. 如果板块今天上涨，但成分股广度、涨停数、龙头/中军结构配合较弱，要谨慎处理。
 7. 如果某个方向今天很强，但中期趋势偏弱，应更倾向归类为“轮动尝试”或“短期脉冲”，而不是直接定义为新主线。
 8. 如果多个信号冲突，不要模糊带过，必须明确写出矛盾点。
+9. 对于提供的行业Top和概念Top板块120日K线，只需要提炼趋势结构、加速/回撤/震荡特征，不要逐日复述。
 
 请严格输出如下 JSON，不要输出任何其他文字：
 
@@ -964,13 +1010,16 @@ def main():
     # 批量拉所有板块日K
     all_codes = [b["Code"] for b in blocks]
     res = tq.get_market_data(
-        field_list=["Close", "Amount"],
+        field_list=["Open", "High", "Low", "Close", "Amount"],
         stock_list=all_codes,
         period="1d",
         count=N,
         dividend_type="none",
         fill_data=True,
     )
+    open_price = res["Open"]
+    high_price = res["High"]
+    low_price = res["Low"]
     close = res["Close"]
     amount = res["Amount"]
     print(f"日K数据拉取完成")
@@ -1074,6 +1123,11 @@ def main():
     print_block_rank(f">>> 📉 行业板块跌幅榜 Bottom {TOP_N} (按当日涨幅排序)", industry_bottom)
     print_block_rank(f">>> 📉 概念板块跌幅榜 Bottom {TOP_N} (按当日涨幅排序)", concept_bottom)
 
+    top_block_kline_120d = {
+        "industry": build_top_block_kline_payload(industry_top, open_price, high_price, low_price, close, amount),
+        "theme": build_top_block_kline_payload(concept_top, open_price, high_price, low_price, close, amount),
+    }
+
     key_blocks = pick_key_blocks(industry_top, concept_top)
     print(f"\n重点板块成分股验证: 计划分析 {len(key_blocks)} 个板块...")
     key_block_analyses = analyze_key_block_members(key_blocks)
@@ -1150,6 +1204,7 @@ def main():
             concept_top,
             concept_bottom,
             key_block_analyses,
+            top_block_kline_120d,
         )
         if intent_verdict.get("content"):
             print(intent_verdict["content"])
@@ -1170,6 +1225,7 @@ def main():
             concept_top,
             concept_bottom,
             key_block_analyses,
+            top_block_kline_120d,
         )
         print("\n" + "=" * 72)
         print(">>> 📋 板块方向预案 Prompt（未调用 LLM）")
