@@ -474,6 +474,34 @@ def build_top_block_kline_payload(top_rows, open_df, high_df, low_df, close_df, 
     return payload
 
 
+def try_parse_json_object(text):
+    cleaned = (text or "").strip()
+    if not cleaned:
+        return None
+
+    if cleaned.startswith("```"):
+        cleaned = cleaned.removeprefix("```json").removeprefix("```").strip()
+        if cleaned.endswith("```"):
+            cleaned = cleaned[:-3].strip()
+
+    try:
+        parsed = json.loads(cleaned)
+        return parsed if isinstance(parsed, dict) else None
+    except json.JSONDecodeError:
+        pass
+
+    start = cleaned.find("{")
+    end = cleaned.rfind("}")
+    if start >= 0 and end > start:
+        candidate = cleaned[start : end + 1]
+        try:
+            parsed = json.loads(candidate)
+            return parsed if isinstance(parsed, dict) else None
+        except json.JSONDecodeError:
+            return None
+    return None
+
+
 def _get_llm_settings():
     """从环境变量读 LLM 配置（ARK_API_KEY / ARK_MODEL / ARK_BASE_URL）"""
     api_key = os.getenv("ARK_API_KEY") or os.getenv("OPENAI_API_KEY")
@@ -685,7 +713,12 @@ def judge_sector_intent_with_llm(
         timeout=120,
     )
     content = resp.choices[0].message.content or ""
-    return {"_model": s["model"], "content": content}
+    parsed = try_parse_json_object(content)
+    if parsed is None:
+        return {"status": "parse_failed", "raw_response": content, "_model": s["model"]}
+    parsed["top_block_kline_120d"] = top_block_kline_120d
+    parsed["_model"] = s["model"]
+    return parsed
 
 
 def build_sector_intent_prompt(
@@ -1206,12 +1239,12 @@ def main():
             key_block_analyses,
             top_block_kline_120d,
         )
-        if intent_verdict.get("content"):
-            print(intent_verdict["content"])
+        if intent_verdict.get("status") == "parse_failed":
+            print(f"[parse_failed] {intent_verdict.get('raw_response','')}")
         elif intent_verdict.get("status"):
             print(f"[{intent_verdict.get('status')}] {intent_verdict.get('reason') or intent_verdict.get('raw_response','')}")
         else:
-            print("(LLM 返回为空)")
+            print(json.dumps(intent_verdict, ensure_ascii=False, indent=2))
         print(f"[⏱ LLM资金意图判断耗时 {time.perf_counter() - t0:.1f}s]")
     else:
         print("\n(已用 --no-llm 跳过 LLM 风格判断)")
