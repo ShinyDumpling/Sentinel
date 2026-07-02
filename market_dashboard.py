@@ -769,50 +769,81 @@ def build_sector_intent_prompt(
 请严格输出如下 JSON，不要输出任何其他文字：
 
 {{
-  "市场全局": {{
-    "资金风格背景": "",
-    "整体结构": "",
-    "一句话总结": ""
+  "market_overview": {{
+    "style_background": "",
+    "structure": "",
+    "summary": ""
   }},
-  "中期主线": [
+  "mid_term_leaders": [
     {{
-      "方向名称": "",
-      "状态": "",
-      "理由": ""
+      "name": "",
+      "status": "",
+      "reason": "",
+      "evidence": [
+        ""
+      ]
     }}
   ],
-  "今日轮动强点": [
+  "short_term_hotspots": [
     {{
-      "方向名称": "",
-      "性质": "",
-      "理由": ""
+      "name": "",
+      "type": "",
+      "reason": "",
+      "evidence": [
+        ""
+      ]
     }}
   ],
-  "次日重点方向": [
+  "next_day_focus": [
     {{
-      "方向名称": "",
-      "状态": "",
-      "理由": "",
-      "次日确认点": ""
+      "name": "",
+      "status": "",
+      "bias": "",
+      "reason": "",
+      "confirm_signals": [
+        ""
+      ],
+      "risk_signals": [
+        ""
+      ]
     }}
   ],
-  "回避方向": [
+  "avoid_directions": [
     {{
-      "方向名称": "",
-      "理由": ""
+      "name": "",
+      "reason": "",
+      "risk_signals": [
+        ""
+      ]
     }}
   ],
-  "矛盾点": [
-    ""
+  "conflicts": [
+    {{
+      "topic": "",
+      "detail": ""
+    }}
   ],
-  "次日观察清单": [
-    ""
+  "watchlist": [
+    {{
+      "item": "",
+      "why": ""
+    }}
   ]
 }}
 
-要求：
+字段要求：
+- `market_overview.style_background`: 用中文概括市场风格背景
+- `market_overview.structure`: 只能从这些值中选一个：`老主线轮动`、`主线切换尝试`、`混合轮动`、`防守主导`
+- `mid_term_leaders[].status`: 只能从这些值中选：`完整`、`动摇`、`走弱`
+- `short_term_hotspots[].type`: 只能从这些值中选：`轮动`、`主线延伸`、`可能新主线`
+- `next_day_focus[].status`: 只能从这些值中选：`主攻`、`观察`、`分歧`
+- `next_day_focus[].bias`: 只能从这些值中选：`进攻`、`防守`、`轮动`、`修复`
+- 每个 `reason` 尽量一句话说清
+- `evidence`、`confirm_signals`、`risk_signals` 都用短句数组表达，不要写成长段
+
+空值要求：
 - 没有内容的数组返回 []
-- 没有明显矛盾时，"矛盾点" 返回 ["无"]
+- 没有明显矛盾时，`conflicts` 返回 [{{"topic":"无","detail":"无"}}]
 - 不要补充 schema 之外的字段
 
 原始输入数据：
