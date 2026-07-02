@@ -13,6 +13,7 @@ import os
 import sys
 import json
 import time
+import io
 from collections import Counter
 from pathlib import Path
 
@@ -28,6 +29,7 @@ TOP_N = 15  # 每个榜单取前15名
 
 BASE_DIR = Path(__file__).resolve().parent
 BLOCK_TYPE_MAP_PATH = BASE_DIR / "tdx_block_type_map.json"
+MARKET_REPORT_JSON_PATH = BASE_DIR / "market_report_json.md"
 BLOCK_TYPE_LABELS = {
     "industry": "【行业】",
     "region": "【地域】",
@@ -502,6 +504,29 @@ def try_parse_json_object(text):
     return None
 
 
+class TeeStream:
+    def __init__(self, *streams):
+        self.streams = streams
+        self.encoding = getattr(streams[0], "encoding", "utf-8") if streams else "utf-8"
+
+    def write(self, data):
+        for stream in self.streams:
+            stream.write(data)
+        return len(data)
+
+    def flush(self):
+        for stream in self.streams:
+            stream.flush()
+
+    def isatty(self):
+        primary = self.streams[0] if self.streams else None
+        return bool(primary and hasattr(primary, "isatty") and primary.isatty())
+
+
+def write_market_report_text(text):
+    MARKET_REPORT_JSON_PATH.write_text(text, encoding="utf-8")
+
+
 def _get_llm_settings():
     """从环境变量读 LLM 配置（ARK_API_KEY / ARK_MODEL / ARK_BASE_URL）"""
     api_key = os.getenv("ARK_API_KEY") or os.getenv("OPENAI_API_KEY")
@@ -941,7 +966,9 @@ def build_sector_intent_prompt(
 
 def main():
     use_llm = "--no-llm" not in sys.argv
-
+    original_stdout = sys.stdout
+    report_buffer = io.StringIO()
+    sys.stdout = TeeStream(original_stdout, report_buffer)
     t0_total = time.perf_counter()
 
     t0 = time.perf_counter()
@@ -1276,6 +1303,10 @@ def main():
         tq.close()
     except Exception:
         pass
+    sys.stdout.flush()
+    full_output = report_buffer.getvalue()
+    sys.stdout = original_stdout
+    write_market_report_text(full_output)
 
 
 if __name__ == "__main__":
