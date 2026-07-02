@@ -832,12 +832,20 @@ def build_sector_intent_prompt(
 }}
 
 字段要求：
+- 所有股票名、板块名、方向名，只要引用到具体对象，必须写成 `中文名(纯代码)` 格式，例如：`半导体(881121)`、`中国卫星(600118)`
+- 不允许只写名字不写代码
+- 不允许输出带 `.SH`、`.SZ`、`.BJ` 后缀的代码
 - `market_overview.style_background`: 用中文概括市场风格背景
 - `market_overview.structure`: 只能从这些值中选一个：`老主线轮动`、`主线切换尝试`、`混合轮动`、`防守主导`
+- `mid_term_leaders[].name`: 必须为 `中文名(纯代码)` 格式
 - `mid_term_leaders[].status`: 只能从这些值中选：`完整`、`动摇`、`走弱`
+- `short_term_hotspots[].name`: 必须为 `中文名(纯代码)` 格式
 - `short_term_hotspots[].type`: 只能从这些值中选：`轮动`、`主线延伸`、`可能新主线`
+- `next_day_focus[].name`: 必须为 `中文名(纯代码)` 格式
 - `next_day_focus[].status`: 只能从这些值中选：`主攻`、`观察`、`分歧`
 - `next_day_focus[].bias`: 只能从这些值中选：`进攻`、`防守`、`轮动`、`修复`
+- `avoid_directions[].name`: 必须为 `中文名(纯代码)` 格式
+- `watchlist[].item`: 如果提到具体股票或板块，必须为 `中文名(纯代码)` 格式
 - 每个 `reason` 尽量一句话说清
 - `evidence`、`confirm_signals`、`risk_signals` 都用短句数组表达，不要写成长段
 
