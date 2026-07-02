@@ -17,6 +17,7 @@ import io
 from collections import Counter
 from pathlib import Path
 
+import pandas as pd
 from tqcenter import tq
 
 if hasattr(sys.stdout, "reconfigure"):
@@ -445,24 +446,29 @@ def build_top_block_kline_payload(top_rows, open_df, high_df, low_df, close_df, 
         code = row["代码"]
         pure_code = code.replace(".SH", "").replace(".SZ", "").replace(".BJ", "")
         try:
-            o = open_df[code].sort_index()
-            h = high_df[code].sort_index()
-            l = low_df[code].sort_index()
-            c = close_df[code].sort_index()
-            a = amount_df[code].sort_index()
+            merged = pd.DataFrame({
+                "open": open_df[code],
+                "high": high_df[code],
+                "low": low_df[code],
+                "close": close_df[code],
+                "amount": amount_df[code],
+            }).sort_index()
         except Exception:
             continue
 
+        merged = merged.dropna(subset=["close"])
+        merged = merged.dropna(how="all", subset=["open", "high", "low", "close", "amount"])
+
         kline_120d = []
-        for idx in c.index:
+        for idx, item in merged.iterrows():
             try:
                 kline_120d.append({
                     "date": str(idx)[:10],
-                    "open": round(float(o.loc[idx]), 2),
-                    "high": round(float(h.loc[idx]), 2),
-                    "low": round(float(l.loc[idx]), 2),
-                    "close": round(float(c.loc[idx]), 2),
-                    "amount_yi": round(float(a.loc[idx]) / 10000, 2),
+                    "open": round(float(item["open"]), 2),
+                    "high": round(float(item["high"]), 2),
+                    "low": round(float(item["low"]), 2),
+                    "close": round(float(item["close"]), 2),
+                    "amount": float(item["amount"]),
                 })
             except Exception:
                 continue
